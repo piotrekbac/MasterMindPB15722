@@ -161,6 +161,13 @@ namespace MasterMind.Engine
             return string.Join(", ", _allowedColors);
         }
 
+        // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+        public string RevealSecretCode()
+        {
+            if (!isGameOver) return "GRA W TOKU!";      // Nie ujawniamy kodu, jeśli gra jeszcze trwa
+            return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
+        }
+
 
     }
 }
