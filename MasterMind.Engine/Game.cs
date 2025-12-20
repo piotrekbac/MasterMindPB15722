@@ -155,7 +155,11 @@ namespace MasterMind.Engine
             return result;  // Zwracamy wynik zgadywania
         }
 
-
+        // Metoda zwracająca dozwolone kolory jako string do wyświetlenia graczowi
+        public string GetAllowedColors()
+        {
+            return string.Join(", ", _allowedColors);
+        }
 
 
     }
