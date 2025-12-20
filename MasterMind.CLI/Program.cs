@@ -9,8 +9,15 @@ namespace MasterMind.CLI
     {
         static void Main(string[] args)
         {
-            
-            
+            Game game = new Game();  // tworzymy nową grę MasterMind
+
+            Console.WriteLine("-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\n");
+            Console.WriteLine("Autor: Piotr Bacior 15 722\n");
+            Console.WriteLine("Twoim zadaniem jest odgadnąć kod składający się z 4 kolorów");
+            Console.WriteLine($"Dostępne kolory: {game.GetAllowedColors()}");
+            Console.WriteLine("Oznaczenia wyniku: [X,Y] gdzie X to idealne trafienia (czarne), a Y to zła pozycja (białe).\n");
+            Console.WriteLine("---PB15722------PB15722------PB15722---");
+
         }
     }
 }
