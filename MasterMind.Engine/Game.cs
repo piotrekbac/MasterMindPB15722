@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text; 
 using System.Threading.Tasks;
 
+// Piotr Bacior - MasterMind Game Engine - nr indeksu: 15 722 - WSEI Kraków
+
 namespace MasterMind.Engine
 {
     // Tworzymy reprezentację wyniku zgadywania kolorów w grze (trafienia dokładne oraz niedokładne)
@@ -39,7 +41,15 @@ namespace MasterMind.Engine
         // Historia gry - przechowujemy zgadywania i ich wyniki w formie ala snapshot'u stanu gry
         public List<(string Guess, GuessResult Result)> History { get; private set; } // historia zgadywań i ich wyników
 
-       
+        // Konstruktor inicjalizujący grę z domyślnymi parametrami - 6 kolorów, długość kodu do zgadnięcia 4, maksymalnie 9 prób
+        public Game(int codeLength = 4, int maxAttempts = 9)
+        {
+            _allowedColors = new char[] { 'r', 'y', 'g', 'b', 'm', 'c' };   // red, yellow, green, blue, magenta, cyan
+            _codeLength = codeLength;
+            _maxAttempts = maxAttempts;
+            History = new List<(string, GuessResult)>();    
+     
+        }
 
     }
     
