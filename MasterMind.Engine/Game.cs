@@ -168,6 +168,10 @@ namespace MasterMind.Engine
             return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
         }
 
-
+        // Metoda ujawniająca kod do odgadnięcia (do celów debugowania) - jest to opcja tylko dla debugowania gry
+        public string DebugGetCode()
+        {
+            return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
+        }
     }
 }
