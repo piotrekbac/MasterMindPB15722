@@ -48,7 +48,37 @@ namespace MasterMind.Engine
             _codeLength = codeLength;
             _maxAttempts = maxAttempts;
             History = new List<(string, GuessResult)>();    
-     
+            StartNewGame();  // rozpoczynamy nową grę przy tworzeniu instancji
+        }
+
+        // Metoda rozpoczynająca nową grę - generuje losowy kod do odgadnięcia i resetuje stan gry
+        public void StartNewGame()
+        {
+            AttemptsUsed = 0;                       // ustawiamy liczbę wykorzystanych prób na 0
+            isGameOver = false;                     // resetujemy stan zakończenia gry
+            isGameWon = false;                      // resetujemy stan wygranej
+            History.Clear();                        // czyścimy historię zgadywań
+            _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
+        }
+
+        // Metoda do przetwarzania zgadywania gracza - generowanie losowego kodu do odgadnięcia (wariacja z powtórzeniami)
+        private char[] GenerateSecretCode()
+        {
+            // Generujemy losowy kod z dozwolonych kolorów
+            Random rnd = new Random();
+
+            // Tworzymy tablicę znaków reprezentującą kod do odgadnięcia
+            char[] code = new char[_codeLength];
+
+            // Losujemy kolory dla każdej pozycji w kodzie
+            for (int i = 0; i < code.Length; i ++)
+            {
+                // Wybieramy losowy kolor z dozwolonych kolorów
+                code[i] = _allowedColors[rnd.Next(_allowedColors.Length)];
+            }
+
+            // Zwracamy wygenerowany kod
+            return code;
         }
 
     }
