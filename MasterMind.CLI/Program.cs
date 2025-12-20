@@ -1,2 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+using MasterMind.Engine;
+
+// Piotr Bacior - MasterMind Game - nr indeksu: 15 722 - WSEI Kraków
+
+namespace MasterMind.CLI
+    {
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            
+            
+        }
+    }
+}
