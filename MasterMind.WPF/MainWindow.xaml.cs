@@ -50,6 +50,12 @@ namespace MasterMind.WPF
             StatusText.Text = "Nowa gra rozpoczęta! Odgadnij kod składający się z 4 kolorów.";
             StatusText.Foreground = Brushes.Black;  // ustawiamy kolor tekstu statusu na czarny
             BtnCheck.IsEnabled = true;              // włączamy przycisk sprawdzania zgadywania
+
+            // Inicjalizujemy ComboBoxy dla zgadywania użytkownika - wypełniamy je dostępnymi kolorami
+            SetupComboBox(Color1);
+            SetupComboBox(Color2);
+            SetupComboBox(Color3);
+            SetupComboBox(Color4);
         }
 
         // Obsługa kliknięcia przycisku "Sprawdź" do oceny zgadywania użytkownika
@@ -68,6 +74,34 @@ namespace MasterMind.WPF
             box.SelectedIndex = 0;
         }
 
+        // Metoda obsługująca kliknięcie przycisku sprawdzania zgadywania
+        private void BtnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            // Pobieramy wybrane kolory z ComboBoxów i tworzymy zgadywany kod
+            char c1 = GetColorChar(Color1.SelectedItem.ToString());
+            char c2 = GetColorChar(Color2.SelectedItem.ToString());
+            char c3 = GetColorChar(Color3.SelectedItem.ToString());
+            char c4 = GetColorChar(Color4.SelectedItem.ToString());
+
+            string guess = $"{c1}{c2}{c3}{c4}"; // tworzymy zgadywany kod na podstawie wybranych kolorów
+        }
+
+
+        // Definiujemy metodę do mapowania nazwy koloru na odpowiadający znak reprezentujący kolor
+        private char GetColorChar(string colorName)
+        {
+            switch (colorName)
+            {
+                case "Red": return 'r';
+                case "Yellow": return 'y';
+                case "Green": return 'g';
+                case "Blue": return 'b';
+                case "Magenta": return 'm';
+                case "Cyan": return 'c';
+                default: return 'r'; // zwracamy spację dla nieznanego koloru
+            }
+        }
+
 
         // Metoda obsługująca kliknięcie przycisku sprawdzania zgadywania
         private string GetColorName(char c)
@@ -83,7 +117,6 @@ namespace MasterMind.WPF
                 case 'c': return "Cyan";
                 default: return "Unknown";
             }
-
         }
     }
 }
