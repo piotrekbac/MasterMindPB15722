@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using MasterMind.Engine;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,12 +25,31 @@ namespace MasterMind.WPF
         public string ResultText { get; set; }
     }
 
-
+    // Interakcja logiki dla MainWindow.xaml
     public partial class MainWindow : Window
     {
+        // Definiujemy pole prywatne do przechowywania instancji gry MasterMind
+        private Game _game;
+
+        // Definiujemy dostępne kolory w grze MasterMind w formie tablicy znaków
+        private readonly char[] _colors = { 'r', 'y', 'g', 'b', 'm', 'c' }; // dostępne kolory: red, yellow, green, blue, magenta, cyan
+
+
+        // Definiujemy konstruktor klasy MainWindow
         public MainWindow()
         {
             InitializeComponent();
+            StartGame();
+        }
+
+        // Metoda do rozpoczęcia nowej gry MasterMind
+        private void StartGame()
+        {
+            _game = new Game();                     // tworzymy nową instancję gry MasterMind
+            HistoryList.Items.Clear();              // czyścimy listę historii zgadywań
+            StatusText.Text = "Nowa gra rozpoczęta! Odgadnij kod składający się z 4 kolorów.";
+            StatusText.Foreground = Brushes.Black;  // ustawiamy kolor tekstu statusu na czarny
+            BtnCheck.IsEnabled = true;              // włączamy przycisk sprawdzania zgadywania
         }
     }
 }
