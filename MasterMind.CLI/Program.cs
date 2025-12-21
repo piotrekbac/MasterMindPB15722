@@ -9,7 +9,7 @@ namespace MasterMind.CLI
     {
         static void Main(string[] args)
         {
-            Game game = new Game();  // tworzymy nową grę MasterMind
+            Game game = new Game();         // tworzymy nową grę MasterMind
 
             Console.WriteLine("-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\n");
             Console.WriteLine("Autor: Piotr Bacior 15 722\n");
@@ -25,10 +25,21 @@ namespace MasterMind.CLI
                 Console.WriteLine($"Próba {game.AttemptsUsed + 1}");
                 Console.ResetColor();
 
+                // Pobieramy dane wejściowe od użytkownika 
                 string input = Console.ReadLine()?.Trim().ToLower();
+
+                // Walidacja danych wejściowych - sprawdzamy czy wprowadzono dokładnie 4 litery
+                if (string.IsNullOrEmpty(input) || input.Length != 4)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Nieprawidłowe dane wejściowe. Wprowadź dokładnie 4 litery reprezentujące kolory.");
+                    Console.ResetColor();   
+                    continue;                // przechodzimy do następnej iteracji pętli
+                }
+
+               
+
             }
-
-
         }
     }
 }
