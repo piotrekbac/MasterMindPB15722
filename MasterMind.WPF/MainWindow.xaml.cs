@@ -51,5 +51,39 @@ namespace MasterMind.WPF
             StatusText.Foreground = Brushes.Black;  // ustawiamy kolor tekstu statusu na czarny
             BtnCheck.IsEnabled = true;              // włączamy przycisk sprawdzania zgadywania
         }
+
+        // Obsługa kliknięcia przycisku "Sprawdź" do oceny zgadywania użytkownika
+        private void SetupComboBox(ComboBox box)
+        {
+            // Inicjalizujemy ComboBox dostępnymi kolorami
+            box.Items.Clear();
+
+            // Dodajemy nazwy kolorów do ComboBox na podstawie tablicy znaków _colors
+            foreach (var c in _colors)
+            {
+                box.Items.Add(GetColorName(c));     // dodajemy nazwę koloru do ComboBox
+            }
+
+            // Ustawiamy domyślnie wybrany indeks na 0 (pierwszy kolor)
+            box.SelectedIndex = 0;
+        }
+
+
+        // Metoda obsługująca kliknięcie przycisku sprawdzania zgadywania
+        private string GetColorName(char c)
+        {
+            // Zwracamy nazwę koloru na podstawie znaku reprezentującego kolor
+            switch (c)
+            {
+                case 'r': return "Red";
+                case 'y': return "Yellow";
+                case 'g': return "Green";
+                case 'b': return "Blue";
+                case 'm': return "Magenta";
+                case 'c': return "Cyan";
+                default: return "Unknown";
+            }
+
+        }
     }
 }
