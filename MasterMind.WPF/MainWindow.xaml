@@ -15,5 +15,24 @@
             <RowDefinition Height="*"/>         <!-- Lista histori -->
             <RowDefinition Height="Auto"/>      <!-- Stopka status -->
         </Grid.RowDefinitions>
+        
+        
+        <!-- Definiujemy panel wyboru kolorów -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <ComboBox x:Name="Color1" Width="60" Margin="5"/>
+            <ComboBox x:Name="Color2" Width="60" Margin="5"/>
+            <ComboBox x:Name="Color3" Width="60" Margin="5"/>
+            <ComboBox x:Name="Color4" Width="60" Margin="5"/>
+
+            <Button x:Name="BtnCheck" Content="Sprawdź" Width="100" Margin="10,0,0,0" Click="BtnCheck_Click"/>
+            <Button x:Name="BtnRestart" Content="Nowa gra" Width="80" Margin="10,0,0,0" Click="BtnRestart_Click"/>
+        </StackPanel>
+        
+        
+        
+        
+        
+        
+        
     </Grid>
 </Window>
