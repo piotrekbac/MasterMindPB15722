@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36127.28 d17.14
+VisualStudioVersion = 17.14.36127.28
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterMind.Engine", "MasterMind.Engine\MasterMind.Engine.csproj", "{996CAC11-7394-4CFA-A9BC-F48324DBFAC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterMind.CLI", "MasterMind.CLI\MasterMind.CLI.csproj", "{64E1CA24-FC90-4307-8829-E05409914D7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterMind.WPF", "MasterMind.WPF\MasterMind.WPF.csproj", "{9F19886B-1284-48EE-BDA0-938C4AA9F1A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{64E1CA24-FC90-4307-8829-E05409914D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64E1CA24-FC90-4307-8829-E05409914D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64E1CA24-FC90-4307-8829-E05409914D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F19886B-1284-48EE-BDA0-938C4AA9F1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F19886B-1284-48EE-BDA0-938C4AA9F1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F19886B-1284-48EE-BDA0-938C4AA9F1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F19886B-1284-48EE-BDA0-938C4AA9F1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
