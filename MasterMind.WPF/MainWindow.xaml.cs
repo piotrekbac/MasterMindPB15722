@@ -84,8 +84,58 @@ namespace MasterMind.WPF
             char c4 = GetColorChar(Color4.SelectedItem.ToString());
 
             string guess = $"{c1}{c2}{c3}{c4}"; // tworzymy zgadywany kod na podstawie wybranych kolorów
+
+            try
+            {
+                var result = _game.EvaluateGuess(guess);         // oceniamy zgadywanie użytkownika
+
+
+                // Dodajemy wpis do historii zgadywań
+                HistoryList.Items.Add(new HistoryItem
+                {
+                    AttemptNumber = _game.AttemptsUsed,
+                    GuessCode = guess,
+                    Exact = result.ExactMatches,
+                    Partial = result.PartialMatches,
+                    ResultText = result.isVictory ? "Wygrana!" : "Pudło!"
+                });                          
+
+                if (result.isVictory)
+                {
+                    //Użytkownik odgadł kod - aktualizujemy status i wyłączamy przycisk sprawdzania zgadywania
+                    StatusText.Text = $"Gratulacje! Odgadłeś kod w {_game.AttemptsUsed} próbach.";
+                    StatusText.Foreground = Brushes.Green;            // ustawiamy kolor tekstu statusu na zielony
+                    BtnCheck.IsEnabled = false;                       // wyłączamy przycisk sprawdzania zgadywania
+
+                    // Wyświetlamy okno dialogowe z gratulacjami
+                    MessageBox.Show("Gratulacje! Odgadłeś kod!", "Wygrana", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
+                // Sprawdzamy czy gra się zakończyła bez odgadnięcia kodu
+                else if (_game.isGameOver)
+                {
+                    StatusText.Text = "Koniec gry! Nie udało się odgadnąć kodu.";
+                    StatusText.Foreground = Brushes.Red;              // ustawiamy kolor tekstu statusu na czerwony
+                    BtnCheck.IsEnabled = false;                       // wyłączamy przycisk sprawdzania zgadywania
+
+                    // Wyświetlamy okno dialogowe informujące o końcu gry
+                    MessageBox.Show("Koniec gry! Nie udało się odgadnąć kodu.", "Koniec gry", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+
+            // Obsługa wyjątków podczas oceny zgadywania
+            catch (System.Exception ex)
+            {
+                // Obsługa błędów podczas oceny zgadywania - wyświetlamy komunikat o błędzie
+                MessageBox.Show($"Błąd: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        // Metoda obsługująca kliknięcie przycisku restartu gry
+        private void BtnRestart_Click(object sender, RoutedEventArgs e)
+        {
+            StartGame(); // rozpoczynamy nową grę po kliknięciu przycisku restartu
+        }
 
         // Definiujemy metodę do mapowania nazwy koloru na odpowiadający znak reprezentujący kolor
         private char GetColorChar(string colorName)
