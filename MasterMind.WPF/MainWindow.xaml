@@ -27,8 +27,19 @@
             <Button x:Name="BtnCheck" Content="Sprawdź" Width="100" Margin="10,0,0,0" Click="BtnCheck_Click"/>
             <Button x:Name="BtnRestart" Content="Nowa gra" Width="80" Margin="10,0,0,0" Click="BtnRestart_Click"/>
         </StackPanel>
-        
-        
+
+        <!-- Teraz tworzymy historię naszych prób w formie ListView -->
+        <ListView x:Name="HistoryList" Grid.Row="1" FontSize="14">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Nr" DisplayMemberBinding="{Binding AttemptNumber}" Width="40"/>
+                    <GridViewColumn Header="Twój kod" DisplayMemberBinding="{Binding GuessCode}" Width="100"/>
+                    <GridViewColumn Header="Czarne (dokładne)" DisplayMemberBinding="{Binding Exact}" Width="120"/>
+                    <GridViewColumn Header="Białe (zła pozycja)" DisplayMemberBinding="{Binding Partial}" Width="120"/>
+                    <GridViewColumn Header="Wynik" DisplayMemberBinding="{Binding ResultText}" Width="150"/> 
+                </GridView>
+            </ListView.View>
+        </ListView>
         
         
         
