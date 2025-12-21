@@ -18,6 +18,17 @@ namespace MasterMind.CLI
             Console.WriteLine("Oznaczenia wyniku: [X,Y] gdzie X to idealne trafienia (czarne), a Y to zła pozycja (białe).\n");
             Console.WriteLine("---PB15722------PB15722------PB15722---");
 
+            // Główna pętla gry - kontynuujemy aż do zakończenia gry
+            while (!game.isGameOver)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine($"Próba {game.AttemptsUsed + 1}");
+                Console.ResetColor();
+
+                string input = Console.ReadLine()?.Trim().ToLower();
+            }
+
+
         }
     }
 }
