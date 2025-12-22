@@ -113,6 +113,8 @@ namespace MasterMind.Engine
             return code;
         }
 
+        // =-=-=-=-=-=--=-=-=-= ZADANIE 1 =-=-=-=-=-=--=-=-=-= 
+
         //// Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
         //public GuessResult EvaluateGuess(string guessInput)
         //{
@@ -206,6 +208,8 @@ namespace MasterMind.Engine
         //    return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
         //}
 
+
+        //=-=-=-=-=-=--=-=-=-= ZADANIE 2 =-=-=-=-=-=--=-=-=-= 
 
         // Statyczna metoda do obliczania wyniku zgadywania (trafienia dokładne i niedokładne) bez potrzeby tworzenia instancji gry
         public static GuessResult CalculateScore(string secretCodeStr, string guessStr)
