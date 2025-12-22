@@ -248,6 +248,7 @@ namespace MasterMind.Engine
                 }
             }
 
+            return new GuessResult(exactMatches, partialMatches);       // Zwracamy wynik zgadywania
         }
 
     }
