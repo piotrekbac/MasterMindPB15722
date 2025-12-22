@@ -109,6 +109,8 @@ namespace MasterMind.Engine
              */
         }
 
+        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
+        public int ReminingPossibilities => _possibleCodes.Count;
 
     }
 }
