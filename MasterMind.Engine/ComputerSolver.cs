@@ -80,10 +80,13 @@ namespace MasterMind.Engine
                 LastGuess = _possibleCodes[0];
             }
 
-
+            // Zwracamy ostatnie zgadywanie 
+            return LastGuess;
 
         }
 
       
+
+
     }
 }
