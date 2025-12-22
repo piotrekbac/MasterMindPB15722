@@ -53,7 +53,20 @@ namespace MasterMind.Engine
 
         }
 
+        // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
+        public string GetNextGuess()
+        {
+            // Wybieramy pierwszą propozycję z listy możliwych kodów
+            if (_possibleCodes == 0)
+            {
+                // Jeśli nie ma możliwych kodów, zgłaszamy wyjątek
+                throw new InvalidOperationException("WykrytoOszustwo: Brak pasujących kodów! Użytkownik musiał podać błędną ocenę wcześniej.");
+            }
 
+            // Zwiększamy licznik ruchów
+            MoveCount++;                                
+        }
 
+      
     }
 }
