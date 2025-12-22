@@ -64,7 +64,24 @@ namespace MasterMind.Engine
             }
 
             // Zwiększamy licznik ruchów
-            MoveCount++;                                
+            MoveCount++;                  
+            
+            // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rrry" bądź podobne
+            if (MoveCount == 1)
+            {
+                LastGuess = "rrry";     // Klasyczne otwarcie 
+
+                // Jeżeli "rrry" zostało wykluczone, weźmy pierwszą pozycję z listy 
+                if (!_possibleCodes.Contains(LastGuess)) LastGuess = _possibleCodes[0];
+            } 
+            else
+            {
+                // W przeciwnym razie, wybierzmy pierwszą pozycję z listy 
+                LastGuess = _possibleCodes[0];
+            }
+
+
+
         }
 
       
