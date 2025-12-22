@@ -21,6 +21,19 @@ namespace MasterMind.Engine
             ExactMatches = exact;
             PartialMatches = partial;
         }
+
+        // Dodajemy operator sprawdzenia równości
+        public static bool operator ==(GuessResult a, GuessResult b)
+        {
+            return a.ExactMatches == b.ExactMatches && a.PartialMatches == b.PartialMatches;
+        }
+
+        // Dodajemy operator sprawdzenia nierówności 
+        public static bool operator !=(GuessResult a, GuessResult b)
+        {
+            return !(a == b);
+        }
+
     }
 
     // Tworzymy klasę reprezentującą logikę gry MasterMind 
