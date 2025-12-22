@@ -1,5 +1,6 @@
 ﻿using System; 
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq; 
 using System.Text; 
 using System.Threading.Tasks;
@@ -25,15 +26,33 @@ namespace MasterMind.Engine
         // Dodajemy operator sprawdzenia równości
         public static bool operator ==(GuessResult a, GuessResult b)
         {
+            // Zwracamy true, jeśli zarówno ExactMatches, jak i PartialMatches są równe
             return a.ExactMatches == b.ExactMatches && a.PartialMatches == b.PartialMatches;
         }
 
         // Dodajemy operator sprawdzenia nierówności 
         public static bool operator !=(GuessResult a, GuessResult b)
         {
+            // Zwracamy negację operatora równości
             return !(a == b);
         }
 
+        // Nadpisujemy metody Equals poprawnego porównywania struktur
+        public override bool Equals(object obj)
+        {
+            // Sprawdzamy, czy obiekt jest typu GuessResult i porównujemy wartości
+            if (obj is GuessResult other) return this == other;
+
+            // Jeśli obiekt nie jest typu GuessResult, zwracamy false
+            return false;
+        }
+
+        // Nadpisujemy metodę GetHashCode dla poprawnego działania w strukturach danych
+        public override int GetHashCode()
+        {
+            // Generujemy hash code na podstawie ExactMatches i PartialMatches
+            return (ExactMatches, PartialMatches).GetHashCode();
+        }
     }
 
     // Tworzymy klasę reprezentującą logikę gry MasterMind 
