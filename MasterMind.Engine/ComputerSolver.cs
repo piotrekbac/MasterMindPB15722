@@ -96,7 +96,17 @@ namespace MasterMind.Engine
                 .Where(potencialSecret => Game.CalculateScore(potencialSecret, LastGuess) == feedbackResult)
                 .ToList();
 
-            /* KRÓTKIE WYTŁUMACZENIE LOGIKI NASZEGO DZIAŁANIA W TYM KODZIE */
+            /* 
+             
+             * KRÓTKIE WYTŁUMACZENIE LOGIKI NASZEGO DZIAŁANIA W TYM KODZIE * 
+             
+            Przykładowo komputer strzelił "rygb". Użytkownik odpowiedział (1,1) czyli 1 kolor na właściwej pozycji i 1 kolor na niewłaściwej pozycji.
+            Komputer musi teraz wyeliminować wszystkie kody, które nie mogą dać takiego wyniku. Czyli kod "mmmm" wylatuje bo ocena 
+            ("mmmm", "rygb") to (0,0). Kod "ryyy" też wylatuje bo ocena ("ryyy", "rygb") to (2,0). Kod "rggg" wylatuje bo ocena ("rggg", "rygb") to (1,0).
+            Czyli kod który pasuje to np "rgyy" bo ocena ("rgyy", "rygb") to (1,1). W ten sposób komputer zawęża listę możliwych kodów do odgadnięcia.
+
+           
+             */
         }
 
 
