@@ -251,5 +251,38 @@ namespace MasterMind.Engine
             return new GuessResult(exactMatches, partialMatches);       // Zwracamy wynik zgadywania
         }
 
+        // Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
+        public GuessResult EvaluateGuess(string guessInput)
+        {
+            // Sprawdzamy poprawność zgadywania - czy gra się zakończyła oraz czy długość zgadywania jest poprawna
+            if (isGameOver) throw new InvalidOperationException("Gra się zakończyła. Rozpocznij nową grę.");
+
+            // Sprawdzamy długość zgadywania
+            if (guessInput.Length != _codeLength) throw new ArgumentException($"Zgadywana długość kodu musi mieć długość {_codeLength}.");
+
+            // Konwertujemy zgadywanie na tablicę znaków dla łatwiejszej manipulacji
+            var result = CalculateScore(new string(_secretCode), guessInput); // Obliczamy wynik zgadywania
+
+
+            AttemptsUsed++;                                                // Zwiększamy liczbę wykorzystanych prób
+            History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
+
+            // Sprawdzamy, czy gra się zakończyła (wygrana)
+            if (result.isVictory)
+            {
+                isGameOver = true;    // Gra zakończona wygraną
+                isGameWon = true;     // Ustawiamy stan wygranej
+            }
+
+            // Sprawdzamy, czy gra się zakończyła (wyczerpane próby)
+            else if (AttemptsUsed >= _maxAttempts)
+            {
+                isGameWon = false;    // Ustawiamy stan przegranej
+                isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
+            }
+
+            return result;  // Zwracamy wynik zgadywania
+        }
+
     }
 }
