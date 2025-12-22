@@ -284,5 +284,8 @@ namespace MasterMind.Engine
             return result;  // Zwracamy wynik zgadywania
         }
 
+        // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+        public string GetAllowedColors() => string.Join(", ", _allowedColors);
+        
     }
 }
