@@ -8,7 +8,15 @@ using System.Threading.Tasks;
 
 namespace MasterMind.Engine
 {
-    internal class ComputerSolver
+    // Klasa odpowiedzialna za logikę rozwiązywania kodu przez komputer
+    public class ComputerSolver
     {
+        // Kolory dostępne w grze MasterMind
+        private readonly char[] _colors = {'r', 'y', 'g', 'b', 'm', 'c' };
+        private List<string> _possibleCodes;            // Lista możliwych kodów z pliku pdf 
+        public string LastGuess { get; private set; }   // Ostatnia propozycja komputera
+        public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
+
+       
     }
 }
