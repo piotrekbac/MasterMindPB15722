@@ -17,6 +17,20 @@ namespace MasterMind.Engine
         public string LastGuess { get; private set; }   // Ostatnia propozycja komputera
         public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
 
-       
+        // Tworzymy metodę ComputerSolver, która wykonuje metodę Reset
+        public ComputerSolver()
+        {
+            Reset();                                    // Inicjalizacja poprzez reset
+        }
+
+        // Definiujemy metodę Reset która generuje wszystkie możliwe kody i resetuje licznik ruchów oraz ostatnią propozycję
+        public void Reset()
+        {
+            // Generowanie wszystkich możliwych kodów
+            _possibleCodes = GenerateAllPossibleCodes();
+
+            MoveCount = 0;                              // Resetowanie licznika ruchów
+            LastGuess = null;                           // Resetowanie ostatniej propozycji
+        }
     }
 }
