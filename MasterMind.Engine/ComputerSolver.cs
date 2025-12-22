@@ -27,7 +27,7 @@ namespace MasterMind.Engine
         public void Reset()
         {
             // Generowanie wszystkich możliwych kodów
-            _possibleCodes = GenerateAllPossibleCodes();
+            _possibleCodes = GenerateAllCodes();
 
             MoveCount = 0;                              // Resetowanie licznika ruchów
             LastGuess = null;                           // Resetowanie ostatniej propozycji
@@ -57,7 +57,7 @@ namespace MasterMind.Engine
         public string GetNextGuess()
         {
             // Wybieramy pierwszą propozycję z listy możliwych kodów
-            if (_possibleCodes == 0)
+            if (_possibleCodes.Count == 0)
             {
                 // Jeśli nie ma możliwych kodów, zgłaszamy wyjątek
                 throw new InvalidOperationException("WykrytoOszustwo: Brak pasujących kodów! Użytkownik musiał podać błędną ocenę wcześniej.");
