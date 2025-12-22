@@ -32,5 +32,28 @@ namespace MasterMind.Engine
             MoveCount = 0;                              // Resetowanie licznika ruchów
             LastGuess = null;                           // Resetowanie ostatniej propozycji
         }
+
+        // Definiujemy Listę stringów GenerateAllPossibleCodes która generuje wszystkie możliwe kody (będzie to 1296 kodów)
+        private List<string> GenerateAllCodes()
+        {
+            // Generowanie wszystkich możliwych kodów (6 kolorów, 4 pozycje)
+            var codes = new List<string>();
+
+            // Generowanie kombinacji kodów
+            foreach (var c1 in _colors)
+                foreach (var c2 in _colors)
+                    foreach (var c3 in _colors)
+                        foreach (var c4 in _colors)
+                        {
+                            codes.Add($"{c1}{c2}{c3}{c4}");     // Dodawanie kombinacji do listy
+                        }
+
+            // Zwracamy listę wszystkich możliwych kodów
+            return codes;
+
+        }
+
+
+
     }
 }
