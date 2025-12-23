@@ -1,7 +1,8 @@
 ﻿using System; 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq; 
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text; 
 using System.Threading.Tasks;
 
@@ -317,6 +318,25 @@ namespace MasterMind.Engine
         public bool isGameOver { get; private set; }        // czy gra się zakończyła
         public bool isGameWon { get; private set; }         // czy gra została wygrana
         public List<(string Guess, GuessResult Result)> History { get; private set; } // historia zgadywań i ich wyników
+
+        public Game(int n = 6, int k = 4, int maxAttempts = 10)
+        {
+            // Walidujemy parametry n i k
+            if (n < 6 || n > 8) throw new ArgumentException("Liczba kolorów (n) musi wynosić 6,7 lub 8.");
+            if (k < 4 || k > 6) throw new ArgumentException("Długość kodu (k) musi wynosić 4, 5 lub 6.");
+            if (k >= n) throw new ArgumentException("Długość kodu (k) musi być mniejsza od liczby kolorów (n).");
+
+            // Ustawiamy dozwolone kolory na podstawie wartości n
+            _currentAllowedColors = _allAvailableColors.Take(n).ToArray();
+            CodeLength = k;                 // Ustawiamy długość kodu do odgadnięcia
+            _maxAttempts = maxAttempts;     // Ustawiamy maksymalną liczbę prób
+
+            // Inicjalizujemy historię zgadywań
+            History = new List<(string, GuessResult)>();
+
+            // Rozpoczynamy nową grę
+            StartNewGame();
+        }
     }
 
 }
