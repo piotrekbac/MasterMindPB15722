@@ -89,6 +89,7 @@
 // Piotr Bacior 15 722 
 
 using System;
+using System.Linq.Expressions;
 using MasterMind.Engine;
 
 namespace MasterMind.CLI
@@ -206,7 +207,45 @@ namespace MasterMind.CLI
                     Console.WriteLine($"Możliwych kombinacji pozostało: {solver.ReminingPossibilities}");
 
                     Console.Write("Podaj liczbę trafień DOKŁADNYCH (czarne - właściwa pozycja).");
+
+                    int exact = int.Parse(Console.ReadLine());
+
+                    if (exact == 4)
+                    {
+                        Console.WriteLine($"\nKomputer odgadł Twój kod w {solver.MoveCount} ruchach!");
+
+                        solved = true;  // Ustawiamy flagę na true, aby zakończyć pętlę
+                        break;
+                    }
+
+                    Console.WriteLine("Podaj liczbę trafień NIEDOKŁADNYCH (białe - zła pozycja).");
+
+                    int partial = int.Parse(Console.ReadLine());
+
+                    if (exact + partial > 4)
+                    {
+                        Console.WriteLine("Błąd: Suma trafień dokładnych i niedokładnych nie może przekraczać 4. Spróbuj ponownie.");
+                        solver.Reset(); 
+
+                        continue;
+                    }
+                    solver.ProcessFeedback(exact, partial);    // Przetwarzamy informacje zwrotne od użytkownika
                 }
+                catch (InvalidOperationException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nOSZUSTWO WYKRYTE: {ex.Message}");
+                    Console.WriteLine("Twoje odpowiedzi były sprzeczne. Komputer nie może znaleźć kodu.");
+                    Console.ResetColor();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
+
+                Console.WriteLine("Naciśnij dowolny klawisz");
+                Console.ReadKey();
             }
 
         }
