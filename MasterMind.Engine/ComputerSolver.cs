@@ -130,6 +130,16 @@ namespace MasterMind.Engine
         public int CurrentK { get; private set; }      // Aktualna wartość K (długość kodu)
 
 
+        // Tworzymy metodę ComputerSolver, która przyjmuje parametry n i k oraz wykonuje metodę Reset
+        public ComputerSolver(int n = 6, int k = 4)
+        {
+            var tempGame = new Game(n, k);    // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+            _colors = tempGame.Colors;        // Pobieramy kolory z gry
+            _codeLength = tempGame.CodeLength; // Pobieramy długość kodu z gry
+            CurrentN = n;                     // Ustawiamy aktualną wartość N
+            CurrentK = k;                     // Ustawiamy aktualną wartość K
+            Reset();                          // Inicjalizacja poprzez reset
+        }
+
     }
-    
 }
