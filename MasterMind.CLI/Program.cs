@@ -122,7 +122,7 @@ namespace MasterMind.CLI
             }
             else if (key.Key == ConsoleKey.D3)
             {
-                break;
+                return;                               // Wyjście z programu
             }
 
         }
@@ -259,8 +259,34 @@ namespace MasterMind.CLI
                 // Czekamy na naciśnięcie klawisza przed kolejnym zgadywaniem i odczytujemy go
                 Console.WriteLine("Naciśnij dowolny klawisz");
                 Console.ReadKey();
+            }   
+        }
+        // Funkcja do wyświetlania wyniku zgadywania w czytelny sposób
+        static void DisplayResult(GuessResult result)
+        {
+            // Wyświetlamy wynik zgadywania za pomocą symboli i ustawiamy odpowiedni kolor tła konsoli
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+
+            // Wyświetlamy idealne trafienia i trafienia na złej pozycji
+            for (int i = 0; i < result.ExactMatches; i++)
+            {
+                Console.Write("* ");     // idealne trafienia
             }
 
+            // ustawiamy kolor dla trafień na złej pozycji i wyświetlamy je
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // Wyświetlamy trafienia na złej pozycji
+            for (int i = 0; i < result.PartialMatches; i++)
+            {
+                Console.Write("o ");
+            }
+
+            // Resetujemy kolor konsoli do domyślnego
+            Console.ResetColor();
+
+            // Wyświetlamy dokładne liczby trafień i trafień na złej pozycji
+            Console.WriteLine($"({result.ExactMatches}, {result.PartialMatches})");
         }
     }
 }
