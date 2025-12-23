@@ -141,5 +141,14 @@ namespace MasterMind.Engine
             Reset();                          // Inicjalizacja poprzez reset
         }
 
+        // Definiujemy metodę Reset która generuje wszystkie możliwe kody i resetuje licznik ruchów oraz ostatnią propozycję
+        public void Reset()
+        { 
+            // Generowanie wszystkich możliwych kodów rekurencyjnie
+            _possibleCodes = GeneratedAllCodesRecursively();   
+
+            MoveCount = 0;              // Resetowanie licznika ruchów
+            LastGuess = null;           // Resetowanie ostatniej propozycji
+        }
     }
 }
