@@ -192,9 +192,23 @@ namespace MasterMind.CLI
             Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy...");
             Console.ReadLine();
 
-            bool solver = false;    // Flaga do kontrolowania pętli zgadywania komputera
+            bool solved = false;    // Flaga do kontrolowania pętli zgadywania komputera
 
-            
+            while (!solved)
+            {
+                try
+                {
+                    string guess = solver.GetNextGuess();    // Pobieramy następną propozycję komputera
+
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine($"\nKomputer zgaduje: {guess.ToUpper()}");
+                    Console.ResetColor();
+                    Console.WriteLine($"Możliwych kombinacji pozostało: {solver.ReminingPossibilities}");
+
+                    Console.Write("Podaj liczbę trafień DOKŁADNYCH (czarne - właściwa pozycja).");
+                }
+            }
+
         }
     }
 }
