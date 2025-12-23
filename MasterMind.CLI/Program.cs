@@ -195,12 +195,14 @@ namespace MasterMind.CLI
 
             bool solved = false;    // Flaga do kontrolowania pętli zgadywania komputera
 
+            // Główna pętla zgadywania komputera - kontynuujemy aż do odgadnięcia kodu
             while (!solved)
             {
                 try
                 {
                     string guess = solver.GetNextGuess();    // Pobieramy następną propozycję komputera
 
+                    // Wyświetlamy propozycję komputera i liczbę pozostałych możliwych kombinacji
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine($"\nKomputer zgaduje: {guess.ToUpper()}");
                     Console.ResetColor();
@@ -208,8 +210,10 @@ namespace MasterMind.CLI
 
                     Console.Write("Podaj liczbę trafień DOKŁADNYCH (czarne - właściwa pozycja).");
 
+                    // Pobieramy liczbę trafień dokładnych od użytkownika
                     int exact = int.Parse(Console.ReadLine());
 
+                    // Sprawdzamy czy komputer odgadł kod 
                     if (exact == 4)
                     {
                         Console.WriteLine($"\nKomputer odgadł Twój kod w {solver.MoveCount} ruchach!");
@@ -220,30 +224,39 @@ namespace MasterMind.CLI
 
                     Console.WriteLine("Podaj liczbę trafień NIEDOKŁADNYCH (białe - zła pozycja).");
 
+                    // Pobieramy liczbę trafień niedokładnych od użytkownika
                     int partial = int.Parse(Console.ReadLine());
 
+                    // Walidujemy sumę trafień dokładnych i niedokładnych
                     if (exact + partial > 4)
                     {
                         Console.WriteLine("Błąd: Suma trafień dokładnych i niedokładnych nie może przekraczać 4. Spróbuj ponownie.");
-                        solver.Reset(); 
 
-                        continue;
+                        solver.Reset();                        // Resetujemy stan solvera
+
+                        continue;                              // Przechodzimy do następnej iteracji pętli
                     }
                     solver.ProcessFeedback(exact, partial);    // Przetwarzamy informacje zwrotne od użytkownika
                 }
+
+                // Obsługujemy wyjątki i wyświetlamy komunikaty o błędach
                 catch (InvalidOperationException ex)
                 {
+                    // Specjalny komunikat w przypadku wykrycia oszustwa przez użytkownika
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"\nOSZUSTWO WYKRYTE: {ex.Message}");
                     Console.WriteLine("Twoje odpowiedzi były sprzeczne. Komputer nie może znaleźć kodu.");
                     Console.ResetColor();
                     break;
                 }
+
+                // Obsługujemy inne wyjątki i wyświetlamy komunikaty o błędach
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Błąd: {ex.Message}\n");
                 }
 
+                // Czekamy na naciśnięcie klawisza przed kolejnym zgadywaniem i odczytujemy go
                 Console.WriteLine("Naciśnij dowolny klawisz");
                 Console.ReadKey();
             }
