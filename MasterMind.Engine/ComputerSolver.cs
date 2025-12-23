@@ -158,5 +158,55 @@ namespace MasterMind.Engine
             GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
             return results;                         // Zwracamy listę wygenerowanych kodów
         }
+
+        // Rekurencyjna metoda generująca kody
+        private void GenerateRecursiveStep(string currentCode, List<string> results)
+        {
+            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
+            if (currentCode.Length == _codeLength)
+            {
+                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
+                return;                         // Kończymy rekurencję dla tego kodu
+            }
+            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
+            foreach (var color in _colors)
+            {
+                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
+                GenerateRecursiveStep(currentCode + color, results);
+            }
+        }
+
+        public string GetNextGuess()
+        {
+            // Wybieramy pierwszą propozycję z listy możliwych kodów
+            if (_possibleCodes.Count == 0)
+            {
+                // Jeśli nie ma możliwych kodów, zgłaszamy wyjątek
+                throw new InvalidOperationException("WykrytoOszustwo: Brak pasujących kodów! Użytkownik musiał podać błędną ocenę wcześniej.");
+            }
+            // Zwiększamy licznik ruchów
+            MoveCount++;
+
+            // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rrry" bądź podobne
+            if (MoveCount == 1 && _codeLength == 4 && _colors.Length >= 2)
+            {
+                // Definiuejmy optymalne otwarcie dla klasycznej gry MasterMind (4 pozycje, co najmniej 2 kolory)
+                string optimalStart = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})";
+
+                LastGuess = optimalStart;     // Klasyczne otwarcie
+
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy
+                if (!_possibleCodes.Contains(LastGuess)) LastGuess = _possibleCodes[0]; 
+            }
+            else
+            {
+                LastGuess = _possibleCodes[0];   // W przeciwnym razie, wybierzmy pierwszą pozycję z listy
+            }
+
+            return LastGuess;    // Zwracamy ostatnie zgadywanie
+        }
+
+
+
     }
 }
