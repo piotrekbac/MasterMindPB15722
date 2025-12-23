@@ -447,5 +447,11 @@ namespace MasterMind.Engine
 
         // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
         public string GetAllowedColors() => string.Join(", ", _currentAllowedColors);
+
+        // Metoda zwracająca dozwolone kolory jako tablicę znaków
+        public char[] GetAllowedColorsArray() => _currentAllowedColors;
+
+        // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+        public string RevealCode() => isGameOver ? new string(_secretCode) : new string('?', CodeLength);
     }
 }
