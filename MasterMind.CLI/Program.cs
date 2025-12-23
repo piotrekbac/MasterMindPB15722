@@ -97,7 +97,21 @@ namespace MasterMind.CLI
     {
         static void Main(string[] args)
         {
-            
+            // Wyświetlamy menu gry Master Mind
+            Console.Clear();    
+            Console.WriteLine("-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\n");
+            Console.WriteLine("Autor: Piotr Bacior 15 722\n");
+            Console.WriteLine("1. Zgaduj kod (Człowiek VS Komputer)");
+            Console.WriteLine("2. Pomyśl kod (Komputer VS Człowiek)");
+            Console.WriteLine("3. Wyjście\n");
+            Console.Write("Wybierz opcję: ");
+
+            // Definiujemy zmienną do przechowywania wyboru użytkownika
+            var key = Console.ReadKey();
+            Console.WriteLine();
+
+
+
         }
     }
 
