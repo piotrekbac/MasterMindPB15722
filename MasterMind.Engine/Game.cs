@@ -56,243 +56,267 @@ namespace MasterMind.Engine
     }
 
     // Tworzymy klasę reprezentującą logikę gry MasterMind 
+    //public class Game
+    //{
+    //    // Konfiguracja gry - dozwolone kolory, długość zgadywanych pozycji, maksymalna liczba prób
+    //    private readonly char[] _allowedColors;
+    //    private readonly int _codeLength;
+    //    private readonly int _maxAttempts;
+
+    //    // Stan naszej gry
+    //    private char[] _secretCode;                         // kod do odgadnięcia (w znaczeniu pozycji do odgadnięcia)
+    //    public int AttemptsUsed { get; private set; }       // liczba wykorzystanych prób
+    //    public bool isGameOver { get; private set; }        // czy gra się zakończyła
+    //    public bool isGameWon { get; private set; }         // czy gra została wygrana
+
+
+    //    // Historia gry - przechowujemy zgadywania i ich wyniki w formie ala snapshot'u stanu gry
+    //    public List<(string Guess, GuessResult Result)> History { get; private set; } // historia zgadywań i ich wyników
+
+    //    // Konstruktor inicjalizujący grę z domyślnymi parametrami - 6 kolorów, długość kodu do zgadnięcia 4, maksymalnie 9 prób
+    //    public Game(int codeLength = 4, int maxAttempts = 9)
+    //    {
+    //        _allowedColors = new char[] { 'r', 'y', 'g', 'b', 'm', 'c' };   // red, yellow, green, blue, magenta, cyan
+    //        _codeLength = codeLength;
+    //        _maxAttempts = maxAttempts;
+    //        History = new List<(string, GuessResult)>();
+    //        StartNewGame();  // rozpoczynamy nową grę przy tworzeniu instancji
+    //    }
+
+    //    // Metoda rozpoczynająca nową grę - generuje losowy kod do odgadnięcia i resetuje stan gry
+    //    public void StartNewGame()
+    //    {
+    //        AttemptsUsed = 0;                       // ustawiamy liczbę wykorzystanych prób na 0
+    //        isGameOver = false;                     // resetujemy stan zakończenia gry
+    //        isGameWon = false;                      // resetujemy stan wygranej
+    //        History.Clear();                        // czyścimy historię zgadywań
+    //        _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
+    //    }
+
+    //    // Metoda do przetwarzania zgadywania gracza - generowanie losowego kodu do odgadnięcia (wariacja z powtórzeniami)
+    //    private char[] GenerateSecretCode()
+    //    {
+    //        // Generujemy losowy kod z dozwolonych kolorów
+    //        Random rnd = new Random();
+
+    //        // Tworzymy tablicę znaków reprezentującą kod do odgadnięcia
+    //        char[] code = new char[_codeLength];
+
+    //        // Losujemy kolory dla każdej pozycji w kodzie
+    //        for (int i = 0; i < code.Length; i++)
+    //        {
+    //            // Wybieramy losowy kolor z dozwolonych kolorów
+    //            code[i] = _allowedColors[rnd.Next(_allowedColors.Length)];
+    //        }
+
+    //        // Zwracamy wygenerowany kod
+    //        return code;
+    //    }
+
+    // =-=-=-=-=-=--=-=-=-= ZADANIE 1 =-=-=-=-=-=--=-=-=-= 
+
+    //// Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
+    //public GuessResult EvaluateGuess(string guessInput)
+    //{
+    //    // Sprawdzamy poprawność zgadywania - czy gra się zakończyła oraz czy długość zgadywania jest poprawna
+    //    if (isGameOver) throw new InvalidOperationException("Gra się zakończyła. Rozpocznij nową grę.");
+    //    if (guessInput.Length != _codeLength) throw new ArgumentException($"Zgadywana długość kodu musi mieć długość {_codeLength}.");
+
+    //    // Konwertujemy zgadywanie na tablicę znaków dla łatwiejszej manipulacji
+    //    char[] guess = guessInput.ToLower().ToCharArray();
+
+    //    // Inicjalizujemy liczniki trafień dokładnych i niedokładnych
+    //    int exactMatches = 0;
+    //    bool[] secretMatched = new bool[_codeLength];
+    //    bool[] guessMatched = new bool[_codeLength];
+
+    //    // Najpierw sprawdzamy trafienia dokładne (kolory na właściwych pozycjach)
+    //    for (int i = 0; i < _codeLength; i++)
+    //    {
+    //        // Sprawdzamy, czy kolor na pozycji i jest trafiony dokładnie
+    //        if (guess[i] == _secretCode[i])
+    //        {
+    //            exactMatches++;                 // Zwiększamy licznik trafień dokładnych
+    //            secretMatched[i] = true;        // Ta pozycja w kodzie sekretnym jest już "zużyta"
+    //            guessMatched[i] = true;         // Ta pozycja w próbie jest już "zużyta"
+    //        }
+    //    }
+
+    //    // Następnie sprawdzamy trafienia niedokładne (kolory na niewłaściwych pozycjach)
+    //    int partialMatches = 0;
+
+    //    // Szukamy tego koloru w sekretnym kodzie, pomijając już trafione dokładnie pozycje 
+    //    for (int i = 0; i < _codeLength; i++)
+    //    {
+    //        // Pomijamy już trafione dokładnie pozycje
+    //        if (guessMatched[i]) continue;
+
+    //        // Szukamy koloru z próby w kodzie sekretnym
+    //        for (int j = 0; j < _codeLength; j++)
+    //        {
+    //            // Pomijamy już trafione dokładnie pozycje w kodzie sekretnym
+    //            if (secretMatched[j]) continue;
+
+    //            // Sprawdzamy, czy kolor z próby pasuje do koloru w kodzie sekretnym
+    //            if (guess[i] == _secretCode[j])
+    //            {
+    //                partialMatches++;              // Zwiększamy licznik trafień niedokładnych
+    //                secretMatched[j] = true;       // Zużywany pozycję w kodzie sekretnym
+    //                break;                         // Przechodzimy do następnej pozycji w zgadywaniu
+    //            }
+    //        }
+    //    }
+
+
+    //    AttemptsUsed++;                                                // Zwiększamy liczbę wykorzystanych prób
+    //    var result = new GuessResult(exactMatches, partialMatches);    // Tworzymy wynik zgadywania
+
+    //    History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
+
+
+    //    // Sprawdzamy, czy gra się zakończyła (wygrana lub wyczerpane próby)
+    //    if (result.isVictory)
+    //    {
+    //        isGameOver = true;    // Gra zakończona wygraną
+    //        isGameWon = true;     // Ustawiamy stan wygranej
+    //    }
+    //    else if (AttemptsUsed >= _maxAttempts)
+    //    {
+    //        isGameWon = false;    // Ustawiamy stan przegranej
+    //        isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
+    //    }
+
+    //    return result;  // Zwracamy wynik zgadywania
+    //}
+
+    //// Metoda zwracająca dozwolone kolory jako string do wyświetlenia graczowi
+    //public string GetAllowedColors()
+    //{
+    //    return string.Join(", ", _allowedColors);
+    //}
+
+    //// Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+    //public string RevealSecretCode()
+    //{
+    //    if (!isGameOver) return "GRA W TOKU!";      // Nie ujawniamy kodu, jeśli gra jeszcze trwa
+    //    return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
+    //}
+
+    //// Metoda ujawniająca kod do odgadnięcia (do celów debugowania) - jest to opcja tylko dla debugowania gry
+    //public string DebugGetCode()
+    //{
+    //    return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
+    //}
+
+
+    //=-=-=-=-=-=--=-=-=-= ZADANIE 2 =-=-=-=-=-=--=-=-=-= 
+
+    // Statyczna metoda do obliczania wyniku zgadywania (trafienia dokładne i niedokładne) bez potrzeby tworzenia instancji gry
+    //public static GuessResult CalculateScore(string secretCodeStr, string guessStr)
+    //{
+    //    char[] secret = secretCodeStr.ToCharArray();        // konwertujemy kod sekretny na tablicę znaków
+    //    char[] guess = guessStr.ToCharArray();              // konwertujemy zgadywanie na tablicę znaków
+    //    int len = secret.Length;                            // długość kodu (zakładamy, że oba mają tę samą długość)
+
+    //    // Inicjalizujemy liczniki trafień dokładnych i niedokładnych
+    //    int exactMatches = 0;
+    //    bool[] secretMatched = new bool[len];               // tablica do śledzenia trafionych pozycji w kodzie sekretnym
+    //    bool[] guessMatched = new bool[len];                // tablica do śledzenia trafionych pozycji w zgadywaniu
+
+    //    // Najpierw sprawdzamy trafienia dokładne (kolory na właściwych pozycjach)
+    //    for (int i = 0; i < len; i++)
+    //    {
+    //        // Sprawdzamy czy kolor na pozycji i jest trafiony dokładnie
+    //        if (guess[i] == secret[i])
+    //        {
+    //            exactMatches++;                             // Zwiększamy licznik trafień dokładnych
+    //            secretMatched[i] = true;                    // Ta pozycja w kodzie sekretnym jest już "zużyta"
+    //            guessMatched[i] = true;                     // Ta pozycja w próbie jest już "zużyta"
+    //        }
+    //    }
+
+    //    int partialMatches = 0;                             // Inicjalizujemy licznik trafień niedokładnych
+    //    for (int i = 0; i < len; i++)
+    //    {
+    //        if (guessMatched[i]) continue;                  // Pomijamy już trafione dokładnie pozycje
+
+    //        // Szukamy koloru z próby w kodzie sekretnym
+    //        for (int j = 0; j < len; j++)
+    //        {
+    //            if (!secretMatched[j] && guess[i] == secret[j])
+    //            {
+    //                partialMatches++;                       // Zwiększamy licznik trafień niedokładnych
+    //                secretMatched[j] = true;                // Zużywamy pozycję w kodzie sekretnym
+    //                break;                                  // Przechodzimy do następnej pozycji w zgadywaniu
+    //            }
+    //        }
+    //    }
+
+    //    return new GuessResult(exactMatches, partialMatches);       // Zwracamy wynik zgadywania
+    //}
+
+    //// Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
+    //public GuessResult EvaluateGuess(string guessInput)
+    //{
+    //    // Sprawdzamy poprawność zgadywania - czy gra się zakończyła oraz czy długość zgadywania jest poprawna
+    //    if (isGameOver) throw new InvalidOperationException("Gra się zakończyła. Rozpocznij nową grę.");
+
+    //    // Sprawdzamy długość zgadywania
+    //    if (guessInput.Length != _codeLength) throw new ArgumentException($"Zgadywana długość kodu musi mieć długość {_codeLength}.");
+
+    //    // Konwertujemy zgadywanie na tablicę znaków dla łatwiejszej manipulacji
+    //    var result = CalculateScore(new string(_secretCode), guessInput); // Obliczamy wynik zgadywania
+
+
+    //    AttemptsUsed++;                                                // Zwiększamy liczbę wykorzystanych prób
+    //    History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
+
+    //    // Sprawdzamy, czy gra się zakończyła (wygrana)
+    //    if (result.isVictory)
+    //    {
+    //        isGameOver = true;    // Gra zakończona wygraną
+    //        isGameWon = true;     // Ustawiamy stan wygranej
+    //    }
+
+    //    // Sprawdzamy, czy gra się zakończyła (wyczerpane próby)
+    //    else if (AttemptsUsed >= _maxAttempts)
+    //    {
+    //        isGameWon = false;    // Ustawiamy stan przegranej
+    //        isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
+    //    }
+
+    //    return result;  // Zwracamy wynik zgadywania
+    //}
+
+    //// Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+    //public string GetAllowedColors() => string.Join(", ", _allowedColors);
+
+
+    //// Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
+    //public string RevealCode() => isGameOver? new string(_secretCode) : "GRA W TOKU!";
+
+    //=-=-=-=-=-=--=-=-=-= ZADANIE 3 =-=-=-=-=-=--=-=-=-= 
+
+    // Tutaj dodajemy dodatkowe funkcje lub klasy zgodnie z wymaganiami zadania 3
     public class Game
     {
-        // Konfiguracja gry - dozwolone kolory, długość zgadywanych pozycji, maksymalna liczba prób
-        private readonly char[] _allowedColors;
-        private readonly int _codeLength;
+        // Konstruktor inicjalizujący grę z określoną długością kodu i dozwolonymi kolorami
+        private static readonly char[] _allAvailableColors = {'r', 'y', 'g', 'b', 'm', 'c' };
+
+        // Konstruktor inicjalizujący grę z określoną długością kodu i dozwolonymi kolorami
+        private readonly char[] _currentAllowedColors;
+
+        // Długość kodu do odgadnięcia
+        public int CodeLength { get; private set; }
+
+        // Maksymalna liczba prób
         private readonly int _maxAttempts;
 
-        // Stan naszej gry
         private char[] _secretCode;                         // kod do odgadnięcia (w znaczeniu pozycji do odgadnięcia)
         public int AttemptsUsed { get; private set; }       // liczba wykorzystanych prób
         public bool isGameOver { get; private set; }        // czy gra się zakończyła
         public bool isGameWon { get; private set; }         // czy gra została wygrana
-
-
-        // Historia gry - przechowujemy zgadywania i ich wyniki w formie ala snapshot'u stanu gry
         public List<(string Guess, GuessResult Result)> History { get; private set; } // historia zgadywań i ich wyników
-
-        // Konstruktor inicjalizujący grę z domyślnymi parametrami - 6 kolorów, długość kodu do zgadnięcia 4, maksymalnie 9 prób
-        public Game(int codeLength = 4, int maxAttempts = 9)
-        {
-            _allowedColors = new char[] { 'r', 'y', 'g', 'b', 'm', 'c' };   // red, yellow, green, blue, magenta, cyan
-            _codeLength = codeLength;
-            _maxAttempts = maxAttempts;
-            History = new List<(string, GuessResult)>();
-            StartNewGame();  // rozpoczynamy nową grę przy tworzeniu instancji
-        }
-
-        // Metoda rozpoczynająca nową grę - generuje losowy kod do odgadnięcia i resetuje stan gry
-        public void StartNewGame()
-        {
-            AttemptsUsed = 0;                       // ustawiamy liczbę wykorzystanych prób na 0
-            isGameOver = false;                     // resetujemy stan zakończenia gry
-            isGameWon = false;                      // resetujemy stan wygranej
-            History.Clear();                        // czyścimy historię zgadywań
-            _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
-        }
-
-        // Metoda do przetwarzania zgadywania gracza - generowanie losowego kodu do odgadnięcia (wariacja z powtórzeniami)
-        private char[] GenerateSecretCode()
-        {
-            // Generujemy losowy kod z dozwolonych kolorów
-            Random rnd = new Random();
-
-            // Tworzymy tablicę znaków reprezentującą kod do odgadnięcia
-            char[] code = new char[_codeLength];
-
-            // Losujemy kolory dla każdej pozycji w kodzie
-            for (int i = 0; i < code.Length; i++)
-            {
-                // Wybieramy losowy kolor z dozwolonych kolorów
-                code[i] = _allowedColors[rnd.Next(_allowedColors.Length)];
-            }
-
-            // Zwracamy wygenerowany kod
-            return code;
-        }
-
-        // =-=-=-=-=-=--=-=-=-= ZADANIE 1 =-=-=-=-=-=--=-=-=-= 
-
-        //// Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
-        //public GuessResult EvaluateGuess(string guessInput)
-        //{
-        //    // Sprawdzamy poprawność zgadywania - czy gra się zakończyła oraz czy długość zgadywania jest poprawna
-        //    if (isGameOver) throw new InvalidOperationException("Gra się zakończyła. Rozpocznij nową grę.");
-        //    if (guessInput.Length != _codeLength) throw new ArgumentException($"Zgadywana długość kodu musi mieć długość {_codeLength}.");
-
-        //    // Konwertujemy zgadywanie na tablicę znaków dla łatwiejszej manipulacji
-        //    char[] guess = guessInput.ToLower().ToCharArray();
-
-        //    // Inicjalizujemy liczniki trafień dokładnych i niedokładnych
-        //    int exactMatches = 0;
-        //    bool[] secretMatched = new bool[_codeLength];
-        //    bool[] guessMatched = new bool[_codeLength];
-
-        //    // Najpierw sprawdzamy trafienia dokładne (kolory na właściwych pozycjach)
-        //    for (int i = 0; i < _codeLength; i++)
-        //    {
-        //        // Sprawdzamy, czy kolor na pozycji i jest trafiony dokładnie
-        //        if (guess[i] == _secretCode[i])
-        //        {
-        //            exactMatches++;                 // Zwiększamy licznik trafień dokładnych
-        //            secretMatched[i] = true;        // Ta pozycja w kodzie sekretnym jest już "zużyta"
-        //            guessMatched[i] = true;         // Ta pozycja w próbie jest już "zużyta"
-        //        }
-        //    }
-
-        //    // Następnie sprawdzamy trafienia niedokładne (kolory na niewłaściwych pozycjach)
-        //    int partialMatches = 0;
-
-        //    // Szukamy tego koloru w sekretnym kodzie, pomijając już trafione dokładnie pozycje 
-        //    for (int i = 0; i < _codeLength; i++)
-        //    {
-        //        // Pomijamy już trafione dokładnie pozycje
-        //        if (guessMatched[i]) continue;
-
-        //        // Szukamy koloru z próby w kodzie sekretnym
-        //        for (int j = 0; j < _codeLength; j++)
-        //        {
-        //            // Pomijamy już trafione dokładnie pozycje w kodzie sekretnym
-        //            if (secretMatched[j]) continue;
-
-        //            // Sprawdzamy, czy kolor z próby pasuje do koloru w kodzie sekretnym
-        //            if (guess[i] == _secretCode[j])
-        //            {
-        //                partialMatches++;              // Zwiększamy licznik trafień niedokładnych
-        //                secretMatched[j] = true;       // Zużywany pozycję w kodzie sekretnym
-        //                break;                         // Przechodzimy do następnej pozycji w zgadywaniu
-        //            }
-        //        }
-        //    }
-
-
-        //    AttemptsUsed++;                                                // Zwiększamy liczbę wykorzystanych prób
-        //    var result = new GuessResult(exactMatches, partialMatches);    // Tworzymy wynik zgadywania
-
-        //    History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
-
-
-        //    // Sprawdzamy, czy gra się zakończyła (wygrana lub wyczerpane próby)
-        //    if (result.isVictory)
-        //    {
-        //        isGameOver = true;    // Gra zakończona wygraną
-        //        isGameWon = true;     // Ustawiamy stan wygranej
-        //    }
-        //    else if (AttemptsUsed >= _maxAttempts)
-        //    {
-        //        isGameWon = false;    // Ustawiamy stan przegranej
-        //        isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
-        //    }
-
-        //    return result;  // Zwracamy wynik zgadywania
-        //}
-
-        //// Metoda zwracająca dozwolone kolory jako string do wyświetlenia graczowi
-        //public string GetAllowedColors()
-        //{
-        //    return string.Join(", ", _allowedColors);
-        //}
-
-        //// Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
-        //public string RevealSecretCode()
-        //{
-        //    if (!isGameOver) return "GRA W TOKU!";      // Nie ujawniamy kodu, jeśli gra jeszcze trwa
-        //    return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
-        //}
-
-        //// Metoda ujawniająca kod do odgadnięcia (do celów debugowania) - jest to opcja tylko dla debugowania gry
-        //public string DebugGetCode()
-        //{
-        //    return new string(_secretCode);             // Ujawnienie kodu po zakończeniu gry
-        //}
-
-
-        //=-=-=-=-=-=--=-=-=-= ZADANIE 2 =-=-=-=-=-=--=-=-=-= 
-
-        // Statyczna metoda do obliczania wyniku zgadywania (trafienia dokładne i niedokładne) bez potrzeby tworzenia instancji gry
-        public static GuessResult CalculateScore(string secretCodeStr, string guessStr)
-        {
-            char[] secret = secretCodeStr.ToCharArray();        // konwertujemy kod sekretny na tablicę znaków
-            char[] guess = guessStr.ToCharArray();              // konwertujemy zgadywanie na tablicę znaków
-            int len = secret.Length;                            // długość kodu (zakładamy, że oba mają tę samą długość)
-
-            // Inicjalizujemy liczniki trafień dokładnych i niedokładnych
-            int exactMatches = 0;
-            bool[] secretMatched = new bool[len];               // tablica do śledzenia trafionych pozycji w kodzie sekretnym
-            bool[] guessMatched = new bool[len];                // tablica do śledzenia trafionych pozycji w zgadywaniu
-
-            // Najpierw sprawdzamy trafienia dokładne (kolory na właściwych pozycjach)
-            for (int i = 0; i < len; i++)
-            {
-                // Sprawdzamy czy kolor na pozycji i jest trafiony dokładnie
-                if (guess[i] == secret[i])
-                {
-                    exactMatches++;                             // Zwiększamy licznik trafień dokładnych
-                    secretMatched[i] = true;                    // Ta pozycja w kodzie sekretnym jest już "zużyta"
-                    guessMatched[i] = true;                     // Ta pozycja w próbie jest już "zużyta"
-                }
-            }
-
-            int partialMatches = 0;                             // Inicjalizujemy licznik trafień niedokładnych
-            for (int i = 0; i < len; i++)
-            {
-                if (guessMatched[i]) continue;                  // Pomijamy już trafione dokładnie pozycje
-
-                // Szukamy koloru z próby w kodzie sekretnym
-                for (int j = 0; j < len; j++)
-                {
-                    if (!secretMatched[j] && guess[i] == secret[j])
-                    {
-                        partialMatches++;                       // Zwiększamy licznik trafień niedokładnych
-                        secretMatched[j] = true;                // Zużywamy pozycję w kodzie sekretnym
-                        break;                                  // Przechodzimy do następnej pozycji w zgadywaniu
-                    }
-                }
-            }
-
-            return new GuessResult(exactMatches, partialMatches);       // Zwracamy wynik zgadywania
-        }
-
-        // Metoda oceniająca zgadywanie gracza i zwracająca wynik (trafienia dokładne i niedokładne)
-        public GuessResult EvaluateGuess(string guessInput)
-        {
-            // Sprawdzamy poprawność zgadywania - czy gra się zakończyła oraz czy długość zgadywania jest poprawna
-            if (isGameOver) throw new InvalidOperationException("Gra się zakończyła. Rozpocznij nową grę.");
-
-            // Sprawdzamy długość zgadywania
-            if (guessInput.Length != _codeLength) throw new ArgumentException($"Zgadywana długość kodu musi mieć długość {_codeLength}.");
-
-            // Konwertujemy zgadywanie na tablicę znaków dla łatwiejszej manipulacji
-            var result = CalculateScore(new string(_secretCode), guessInput); // Obliczamy wynik zgadywania
-
-
-            AttemptsUsed++;                                                // Zwiększamy liczbę wykorzystanych prób
-            History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
-
-            // Sprawdzamy, czy gra się zakończyła (wygrana)
-            if (result.isVictory)
-            {
-                isGameOver = true;    // Gra zakończona wygraną
-                isGameWon = true;     // Ustawiamy stan wygranej
-            }
-
-            // Sprawdzamy, czy gra się zakończyła (wyczerpane próby)
-            else if (AttemptsUsed >= _maxAttempts)
-            {
-                isGameWon = false;    // Ustawiamy stan przegranej
-                isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
-            }
-
-            return result;  // Zwracamy wynik zgadywania
-        }
-
-        // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
-        public string GetAllowedColors() => string.Join(", ", _allowedColors);
-
-
-        // Metoda ujawniająca kod do odgadnięcia po zakończeniu gry
-        public string RevealCode() => isGameOver? new string(_secretCode) : "GRA W TOKU!";
     }
+
 }

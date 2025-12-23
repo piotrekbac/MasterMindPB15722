@@ -208,7 +208,7 @@ namespace MasterMind.CLI
                     Console.ResetColor();
                     Console.WriteLine($"Możliwych kombinacji pozostało: {solver.ReminingPossibilities}");
 
-                    Console.Write("Podaj liczbę trafień DOKŁADNYCH (czarne - właściwa pozycja).");
+                    Console.Write("Podaj liczbę trafień DOKŁADNYCH (czarne - właściwa pozycja).\n");
 
                     // Pobieramy liczbę trafień dokładnych od użytkownika
                     int exact = int.Parse(Console.ReadLine());
@@ -222,7 +222,7 @@ namespace MasterMind.CLI
                         break;
                     }
 
-                    Console.WriteLine("Podaj liczbę trafień NIEDOKŁADNYCH (białe - zła pozycja).");
+                    Console.WriteLine("Podaj liczbę trafień NIEDOKŁADNYCH (białe - zła pozycja).\n");
 
                     // Pobieramy liczbę trafień niedokładnych od użytkownika
                     int partial = int.Parse(Console.ReadLine());
@@ -244,7 +244,7 @@ namespace MasterMind.CLI
                 {
                     // Specjalny komunikat w przypadku wykrycia oszustwa przez użytkownika
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"\nOSZUSTWO WYKRYTE: {ex.Message}");
+                    Console.WriteLine($"\nUWAGA!: {ex.Message}");
                     Console.WriteLine("Twoje odpowiedzi były sprzeczne. Komputer nie może znaleźć kodu.");
                     Console.ResetColor();
                     break;
