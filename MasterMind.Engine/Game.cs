@@ -430,6 +430,19 @@ namespace MasterMind.Engine
             History.Add((guessInput, result));                             // Dodajemy zgadywanie i jego wynik do historii
 
 
+            // Sprawdzamy, czy gra się zakończyła (wygrana)
+            if (result.ExactMatches == CodeLength)
+            {
+                isGameWon = true;     // Ustawiamy stan wygranej
+                isGameOver = true;    // Gra zakończona wygraną
+            }
+            else if (AttemptsUsed >= _maxAttempts)
+            {
+                isGameWon = false;    // Ustawiamy stan przegranej
+                isGameOver = true;    // Gra zakończona przegraną (wyczerpane próby)
+            }
+
+            return result;  // Zwracamy wynik zgadywania
         }
     }
 }
