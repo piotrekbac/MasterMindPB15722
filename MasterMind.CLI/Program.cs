@@ -98,7 +98,7 @@ namespace MasterMind.CLI
         static void Main(string[] args)
         {
             // Wyświetlamy menu gry Master Mind
-            Console.Clear();    
+            Console.Clear();
             Console.WriteLine("-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\n");
             Console.WriteLine("Autor: Piotr Bacior 15 722\n");
             Console.WriteLine("1. Zgaduj kod (Człowiek VS Komputer)");
@@ -110,9 +110,48 @@ namespace MasterMind.CLI
             var key = Console.ReadKey();
             Console.WriteLine();
 
-
+            // Obsługujemy wybór użytkownika za pomocą instrukcji switch
+            if (key.Key == ConsoleKey.D1)
+            {
+                PlayHumanGuesser();                 // Funkcja do obsługi trybu, w którym człowiek zgaduje kod
+            }
+            else if (key.Key == ConsoleKey.D2)
+            {
+                PlayComputerGuesser();              // Funkcja do obsługi trybu, w którym komputer zgaduje kod
+            }
+            else if (key.Key == ConsoleKey.D3)
+            {
+                break;
+            }
 
         }
-    }
 
+        // Definiujemy funkcję do obsługi trybu, w którym człowiek zgaduje kod
+        static void PlayHumanGuesser()
+        {
+            Game game = new Game();         // tworzymy nową grę MasterMind
+
+            Console.WriteLine("\n[TRYB] Zgadujesz kod komputera.");
+            Console.WriteLine($"Dostępne kolory: {game.GetAllowedColors()}");
+
+            // Główna pętla gry - kontynuujemy aż do zakończenia gry
+            while (!game.isGameOver)
+            {
+                // Pobieramy dane wejściowe od użytkownika 
+                Console.WriteLine($"Próba {game.AttemptsUsed + 1}: ");
+
+                // Tworzymy zmienną input do przechowywania danych wejściowych użytkownika
+                string input = Console.ReadLine()?.Trim().ToLower();
+
+                // Walidacja danych wejściowych - sprawdzamy czy wprowadzono dokładnie 4 litery
+                if (string.IsNullOrEmpty(input) || input.Length != 4)
+                {
+                    Console.WriteLine("Błąd: Wpisz 4 znaki.");
+                    continue;
+                }
+                
+                
+            }
+        }
+    }
 }
