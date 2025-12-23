@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text; 
 using System.Threading.Tasks;
@@ -376,7 +377,20 @@ namespace MasterMind.Engine
             bool[] secretMatched = new bool[len];               // tablica do śledzenia trafionych pozycji w kodzie sekretnym
             bool[] guessMatched = new bool[len];                // tablica do śledzenia trafionych pozycji w zgadywaniu
 
-            
+
+            // Najpierw sprawdzamy trafienia dokładne (kolory na właściwych pozycjach)
+            for (int i = 0; i < len; i++)
+            {
+                // Sprawdzamy czy kolor na pozycji i jest trafiony dokładnie
+                if (guess[i] == secret[i])
+                {
+                    exactMatches++;                    // Zwiększamy licznik trafień dokładnych
+                    secretMatched[i] = true;           // Ta pozycja w kodzie sekretnym jest już "zużyta"
+                    guessMatched[i] = true;            // Ta pozycja w próbie jest już "zużyta"
+                }
+            }
+
+
         }
     }
 }
