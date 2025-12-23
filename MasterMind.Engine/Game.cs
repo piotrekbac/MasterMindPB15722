@@ -365,6 +365,18 @@ namespace MasterMind.Engine
             return code;
         }
 
-    }
+        // Statyczna metoda do obliczania wyniku zgadywania (trafienia dokładne i niedokładne) bez potrzeby tworzenia instancji gry
+        public static GuessResult CalculateScore(string secretCodeStr, string guessStr)
+        {
+            char[] secret = secretCodeStr.ToCharArray();        // konwertujemy kod sekretny na tablicę znaków
+            char[] guess = guessStr.ToCharArray();              // konwertujemy zgadywanie na tablicę znaków
+            int len = secret.Length;                            // długość kodu (zakładamy, że oba mają tę samą długość)
 
+            int exactMatches = 0;
+            bool[] secretMatched = new bool[len];               // tablica do śledzenia trafionych pozycji w kodzie sekretnym
+            bool[] guessMatched = new bool[len];                // tablica do śledzenia trafionych pozycji w zgadywaniu
+
+            
+        }
+    }
 }
