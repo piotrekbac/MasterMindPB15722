@@ -182,6 +182,19 @@ namespace MasterMind.CLI
             Console.ReadKey();
         }
 
+        // Definiujemy funkcję do obsługi trybu, w którym komputer zgaduje kod
+        static void PlayComputerGuesser()
+        {
+            // Definiujemy zmienną solver jako nowy obiekt ComputerSolver
+            ComputerSolver solver = new ComputerSolver();
+            Console.WriteLine("\n[TRYB] Pomyśl sekretny kod (4 znaki: r, y, g, b, m, c)");
+            Console.WriteLine("Zapisz go sobie na kartce, nie wpisuj go tutaj!");
+            Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy...");
+            Console.ReadLine();
 
+            bool solver = false;    // Flaga do kontrolowania pętli zgadywania komputera
+
+            
+        }
     }
 }
