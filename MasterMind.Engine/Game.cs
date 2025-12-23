@@ -302,7 +302,7 @@ namespace MasterMind.Engine
     public class Game
     {
         // Konstruktor inicjalizujący grę z określoną długością kodu i dozwolonymi kolorami
-        private static readonly char[] _allAvailableColors = {'r', 'y', 'g', 'b', 'm', 'c' };
+        private static readonly char[] _allAvailableColors = { 'r', 'y', 'g', 'b', 'm', 'c' };
 
         // Konstruktor inicjalizujący grę z określoną długością kodu i dozwolonymi kolorami
         private readonly char[] _currentAllowedColors;
@@ -337,6 +337,19 @@ namespace MasterMind.Engine
             // Rozpoczynamy nową grę
             StartNewGame();
         }
+
+        // Metoda rozpoczynająca nową grę - generuje losowy kod do odgadnięcia i resetuje stan gry
+        public void StartNewGame()
+        {
+            AttemptsUsed = 0;                       // ustawiamy liczbę wykorzystanych prób na 0
+            isGameOver = false;                     // resetujemy stan zakończenia gry
+            isGameWon = false;                      // resetujemy stan wygranej
+            History.Clear();                        // czyścimy historię zgadywań
+            _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
+        }
+
+        
+
     }
 
 }
