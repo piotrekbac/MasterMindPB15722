@@ -149,7 +149,19 @@ namespace MasterMind.CLI
                     Console.WriteLine("Błąd: Wpisz 4 znaki.");
                     continue;
                 }
-                
+
+                // Funkcja do wyświetlania wyniku zgadywania
+                try
+                {
+                    var result = game.EvaluateGuess(input);         // oceniamy zgadywanie użytkownika
+                    DisplayResult(result);                          // wyświetlamy wynik zgadywania
+                }
+
+                // Obsługujemy wyjąki i wyświetlamy komunikaty o błędach
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
                 
             }
         }
