@@ -164,6 +164,24 @@ namespace MasterMind.CLI
                 }
                 
             }
+
+            // Wyświetlamy komunikat o zakończeniu gry
+            if (game.isGameWon)
+            {
+                Console.WriteLine("Gratulacje! Odgadłeś kod!");
+            }
+
+            // Wyświetlamy prawidłowy kod jeżeli użytkownik nie odgadł kodu
+            else
+            {
+                Console.WriteLine($"Koniec gry! Prawidłowy kod to: {game.RevealCode()}");
+            }
+
+            // Czekamy na naciśnięcie klawisza przed zakończeniem gry, a następnie wracamy do menu głównego
+            Console.WriteLine("Naciśnij dowolny klawisz...");
+            Console.ReadKey();
         }
+
+
     }
 }
