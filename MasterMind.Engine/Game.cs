@@ -348,7 +348,22 @@ namespace MasterMind.Engine
             _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
         }
 
-        
+        // Metoda do przetwarzania zgadywania gracza - generowanie losowego kodu do odgadnięcia (wariacja bez powtórzeń)
+        private char[] GenerateSecretCode()
+        {
+            // Generujemy losowy kod z dozwolonych kolorów bez powtórzeń
+            Random rnd = new Random();
+            char[] code = new char[CodeLength];
+
+            // Losujemy kolory dla każdej pozycji w kodzie bez powtórzeń
+            for (int i = 0; i < CodeLength; i++)
+            {
+                code[i] = _currentAllowedColors[rnd.Next(_currentAllowedColors.Length)];
+            }
+
+            // Zwracamy wygenerowany kod
+            return code;
+        }
 
     }
 
