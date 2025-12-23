@@ -150,5 +150,13 @@ namespace MasterMind.Engine
             MoveCount = 0;              // Resetowanie licznika ruchów
             LastGuess = null;           // Resetowanie ostatniej propozycji
         }
+
+        // Definiujemy Listę stringów GeneratedAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+        private List<string> GeneratedAllCodesRecursively()
+        {
+            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
+            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
+            return results;                         // Zwracamy listę wygenerowanych kodów
+        }
     }
 }
