@@ -260,6 +260,18 @@ namespace MasterMind.Engine
             Reset();        // Inicjalizacja poprzez reset
         }
 
-       
+        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+        public void Reset()
+        {
+            // Resetowanie stanu gry
+            _workingSet = new List<string>(_allPermutations);   
+
+            _history.Clear();                       // Czyszczenie historii zgadywań
+            MoveCount = 0;                          // Resetowanie licznika ruchów
+            LastGuess = null;                       // Resetowanie ostatniej propozycji
+            DetectedErrorsForBestCondidate = 0;     // Resetowanie liczby wykrytych błędów
+        }
+
+
     }
 }
