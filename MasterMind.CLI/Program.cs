@@ -571,6 +571,9 @@ namespace MasterMind.CLI
         static int currentN = 6;
         static int currentK = 4;
 
+        // Nowe ustawienia do Zadania 4 - tryb oszusta
+        static bool allowList = false;
+        static int maxLies = 0;
 
         static void Main(string[] args)
         {
