@@ -437,7 +437,7 @@ namespace MasterMind.CLI
 
             // Wyświetlamy komunikat o zakończeniu gry
             if (game.isGameWon)
-            { 
+            {
                 Console.WriteLine("Gratulacje! Odgadłeś kod!");
             }
 
@@ -462,6 +462,64 @@ namespace MasterMind.CLI
             Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy przejsć dalej...");
             Console.ReadLine();
 
+            bool solved = false;    // Flaga do kontrolowania pętli zgadywania komputera
+
+            // Główna pętla zgadywania komputera - kontynuujemy aż do odgadnięcia kodu
+            while (!solved)
+            {
+                // Sprawdzamy czy komputer odgadł kod
+                try
+                {
+                    string guess = solver.GetNextGuess();    // Pobieramy następną propozycję komputera
+
+                    // Wyświetlamy propozycję komputera i liczbę pozostałych możliwych kombinacji
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.ReminingPossibilities})");
+                    Console.ResetColor();
+
+                    // Pobieramy liczbę trafień dokładnych od użytkownika
+                    Console.WriteLine("Trafienia DOKŁADNE (czarne)");
+                    int exact = int.Parse(Console.ReadLine());              // Liczba trafień dokładnych 
+
+                    // Sprawdzamy czy komputer odgadł kod
+                    if (exact == currentK)
+                    {
+                        Console.WriteLine($"\nKomputer odgadł Twój kod w {solver.MoveCount} ruchach!");
+                        solved = true;  // Ustawiamy flagę na true, aby zakończyć pętlę
+                        break;
+                    }
+
+                    Console.WriteLine("Trafienia NIEDOKŁADNE (białe)");
+                    int partial = int.Parse(Console.ReadLine());            // Liczba trafień niedokładnych
+
+                    // Walidujemy sumę trafień dokładnych i niedokładnych
+                    if (exact + partial > currentK)
+                    {
+                        Console.WriteLine($"Błąd: Suma trafień > {currentK}. Spróbuj ponowanie.");
+                        continue;
+                    }
+
+                    solver.ProcessFeedback(exact, partial);    // Przetwarzamy informacje zwrotne od użytkownika
+                }
+
+                // Wyłapujemy wyjątki i wyświetlamy komunikaty o błędach
+                catch (InvalidOperationException ex)
+                {
+                    // Specjalny komunikat w przypadku wykrycia oszustwa przez użytkownika
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nOSZUSTWO: {ex.Message}");
+                    Console.ResetColor();
+                    break;
+                }
+
+                // Wyłapujemy inne wyjątki i wyświetlamy komunikaty o błędach
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
+            }
+            Console.WriteLine("Naciśnij dowolny klawisz, aby kontynuować... ");
+            Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego 
 
         }
     }
