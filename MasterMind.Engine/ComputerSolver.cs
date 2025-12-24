@@ -297,6 +297,109 @@ namespace MasterMind.Engine
             }
         }
 
+        // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
+        public string GetNextGuess()
+        {
+            MoveCount++;                   // Zwiększamy licznik ruchów
 
+            // Wybieramy pierwszą propozycję z listy możliwych kodów
+            if (MoveCount == 1)
+            {
+                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rryy" bądź podobne
+                if (_codeLength >= 4 && _colors.Length >= 2)
+                {
+                    LastGuess = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})" + (_codeLength > 4 ? new string(_colors[0], _codeLength - 4) : ""); // Optymalne otwarcie dla klasycznej gry MasterMind
+                }
+
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+                else
+                {
+                    // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy roboczej
+                    LastGuess = _allPossibleCodes[0]; 
+                }
+
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+                if (!AllowErrors && !_workingSet.Contains(LastGuess)) LastGuess = _workingSet[0]; 
+                {
+                    // W przeciwnym razie, wybieramy pierwszą pozycję z listy roboczej
+                    return LastGuess;    
+                }
+            }
+
+            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+            if (!AllowErrors)
+            {
+                // Filtrujemy listę roboczą na podstawie historii zgadywań
+                if (_workingSet.Count == 0)
+                {
+                    throw new InvalidOperationException("Brak pasujących kodów! Sprzeczność w odpowiedziach.");
+                }
+
+                LastGuess = _workingSet[0];     // Wybieramy pierwszą pozycję z listy roboczej
+                return LastGuess;               // Zwracamy ostatnie zgadywanie
+            }
+
+            // Tryb zaawansowany - zezwalający na błędy użytkownika, wolniejsze działanie, analiza historii
+            else
+            {
+                // Analizujemy wszystkie możliwe kody i wybieramy te, które minimalizują liczbę sprzeczności z historią zgadywań
+                var candidates = new List<string>();
+
+                // Najmniejsza liczba błędów znaleziona jak dotąd
+                int minErrorsFound = int.MaxValue;
+
+                // Przeglądamy wszystkie możliwe kody
+                foreach (var potencialCode in _allPermutations)
+                {
+                    // Liczymy liczbę błędów dla tego potencjalnego kodu w stosunku do historii zgadywań
+                    int errors = 0;
+
+                    // Sprawdzamy każdy wpis w historii zgadywań
+                    foreach (var entry in _history)
+                    {
+                        // Symulujemy wynik dla potencjalnego kodu i porównujemy z rzeczywistym wynikiem
+                        var simulatedResult = Game.CalculateScore(potencialCode, entry.Guess);
+
+                        // Jeśli wynik się nie zgadza, zwiększamy licznik błędów
+                        if (simulatedResult != entry.Result)
+                        {
+                            errors++;   // Zwiększamy liczbę błędów
+                        }
+
+                        // Przerywamy, jeśli liczba błędów przekracza już najlepszy znaleziony wynik
+                        if (errors > minErrorsFound && minErrorsFound != int.MaxValue)
+                        {
+                            break;
+                        }
+                    }
+
+                    // Aktualizujemy listę kandydatów, jeśli znaleźliśmy mniej błędów
+                    if (errors < minErrorsFound)
+                    {
+                        minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
+                        candidates.Clear();                 // Czyścimy listę kandydatów
+                        candidates.Add(potencialCode);      // Dodajemy nowego kandydata
+                    }
+
+                    // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
+                    else if (errors == minErrorsFound)
+                    {
+                        candidates.Add(potencialCode);      // Dodajemy kandydata do listy
+                    }
+                }
+
+                // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
+                DetectedErrorsForBestCondidate = minErrorsFound;
+
+                // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
+                if (minErrorsFound > MaxErrorsAllowed)
+                {
+                    throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności, a zezwoliłeś na max {MaxErrorsAllowed}. Za dużo kłamstw!");
+                }
+
+                LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
+                return LastGuess;               // Zwracamy ostatnie zgadywanie
+            }   
+        }
     }
 }
