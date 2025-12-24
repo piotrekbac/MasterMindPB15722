@@ -119,106 +119,132 @@ namespace MasterMind.Engine
     // =-=-=-=-=-=--=-=-=-= ZADANIE 2 =-=-=-=-=-=--=-=-=-= 
 
     // Klasa odpowiedzialna za logikę rozwiązywania kodu przez komputer - wersja uproszczona
+    //    public class ComputerSolver
+    //    {
+    //        private char[] _colors;         // Kolory dostępne w grze MasterMind
+    //        private int _codeLength;        // Długość kodu do odgadnięcia
+    //        private List<string> _possibleCodes;    // Lista możliwych kodów
+    //        public string LastGuess { get; private set; }   // Ostatnia propozycja komputera
+    //        public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
+    //        public int CurrentN { get; private set; }      // Aktualna wartość N (ilość kolorów)
+    //        public int CurrentK { get; private set; }      // Aktualna wartość K (długość kodu)
+
+
+    //        // Tworzymy metodę ComputerSolver, która przyjmuje parametry n i k oraz wykonuje metodę Reset
+    //        public ComputerSolver(int n = 6, int k = 4)
+    //        {
+    //            var tempGame = new Game(n, k);    // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+    //            _colors = tempGame.GetAllowedColorsArray();        // Pobieramy kolory z gry
+    //            _codeLength = tempGame.CodeLength; // Pobieramy długość kodu z gry
+    //            CurrentN = n;                     // Ustawiamy aktualną wartość N
+    //            CurrentK = k;                     // Ustawiamy aktualną wartość K
+    //            Reset();                          // Inicjalizacja poprzez reset
+    //        }
+
+    //        // Definiujemy metodę Reset która generuje wszystkie możliwe kody i resetuje licznik ruchów oraz ostatnią propozycję
+    //        public void Reset()
+    //        { 
+    //            // Generowanie wszystkich możliwych kodów rekurencyjnie
+    //            _possibleCodes = GeneratedAllCodesRecursively();   
+
+    //            MoveCount = 0;              // Resetowanie licznika ruchów
+    //            LastGuess = null;           // Resetowanie ostatniej propozycji
+    //        }
+
+    //        // Definiujemy Listę stringów GeneratedAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+    //        private List<string> GeneratedAllCodesRecursively()
+    //        {
+    //            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
+    //            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
+    //            return results;                         // Zwracamy listę wygenerowanych kodów
+    //        }
+
+    //        // Rekurencyjna metoda generująca kody
+    //        private void GenerateRecursiveStep(string currentCode, List<string> results)
+    //        {
+    //            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
+    //            if (currentCode.Length == _codeLength)
+    //            {
+    //                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
+    //                return;                         // Kończymy rekurencję dla tego kodu
+    //            }
+    //            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
+    //            foreach (var color in _colors)
+    //            {
+    //                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
+    //                GenerateRecursiveStep(currentCode + color, results);
+    //            }
+    //        }
+
+    //        public string GetNextGuess()
+    //        {
+    //            // Wybieramy pierwszą propozycję z listy możliwych kodów
+    //            if (_possibleCodes.Count == 0)
+    //            {
+    //                // Jeśli nie ma możliwych kodów, zgłaszamy wyjątek
+    //                throw new InvalidOperationException("WykrytoOszustwo: Brak pasujących kodów! Użytkownik musiał podać błędną ocenę wcześniej.");
+    //            }
+    //            // Zwiększamy licznik ruchów
+    //            MoveCount++;
+
+    //            // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rrry" bądź podobne
+    //            if (MoveCount == 1 && _codeLength == 4 && _colors.Length >= 2)
+    //            {
+    //                // Definiuejmy optymalne otwarcie dla klasycznej gry MasterMind (4 pozycje, co najmniej 2 kolory)
+    //                string optimalStart = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})";
+
+    //                LastGuess = optimalStart;     // Klasyczne otwarcie
+
+    //                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy
+    //                if (!_possibleCodes.Contains(LastGuess)) LastGuess = _possibleCodes[0]; 
+    //            }
+    //            else
+    //            {
+    //                LastGuess = _possibleCodes[0];   // W przeciwnym razie, wybierzmy pierwszą pozycję z listy
+    //            }
+
+    //            return LastGuess;    // Zwracamy ostatnie zgadywanie
+    //        }
+
+    //        // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
+    //        public void ProcessFeedback(int exact, int partial)
+    //        {
+    //            // Tworzymy wynik informacji zwrotnej na podstawie dokładnych i częściowych trafień
+    //            var feedbackResult = new GuessResult(exact, partial);
+
+    //            // Filtrujemy listę możliwych kodów na podstawie informacji zwrotnej
+    //            _possibleCodes = _possibleCodes
+    //                .Where(potencialSecret => Game.CalculateScore(potencialSecret, LastGuess) == feedbackResult)
+    //                .ToList();
+    //        }
+
+    //        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
+    //        public int ReminingPossibilities => _possibleCodes.Count;
+    //    }
+    //}
+
+    // =-=-=-=-=-=--=-=-=-= ZADANIE 4 =-=-=-=-=-=--=-=-=-= 
+
+    // Klasa odpowiedzialna za logikę rozwiązywania kodu przez komputer - wersja z trybem klasycznym i zaawansowanym
     public class ComputerSolver
     {
-        private char[] _colors;         // Kolory dostępne w grze MasterMind
-        private int _codeLength;        // Długość kodu do odgadnięcia
-        private List<string> _possibleCodes;    // Lista możliwych kodów
+        private readonly char[] _colors;         // Kolory dostępne w grze MasterMind
+        private readonly int _codeLength;        // Długość kodu do odgadnięcia
+
+        private readonly List<string> _allPossibleCodes;    // Lista wszystkich możliwych kodów
+
+        private List<string> _workingSet;            // Lista robocza (używana w trybie klasycznym)
+
+        private List<(string Guess, GuessResult Result)> _history;
+
         public string LastGuess { get; private set; }   // Ostatnia propozycja komputera
         public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
-        public int CurrentN { get; private set; }      // Aktualna wartość N (ilość kolorów)
-        public int CurrentK { get; private set; }      // Aktualna wartość K (długość kodu)
+
+        public bool AllowErrors { get; set; } = false;  // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
+        public int MaxErrorsAllowed { get; set; } = 0;  // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
+
+        public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
 
 
-        // Tworzymy metodę ComputerSolver, która przyjmuje parametry n i k oraz wykonuje metodę Reset
-        public ComputerSolver(int n = 6, int k = 4)
-        {
-            var tempGame = new Game(n, k);    // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
-            _colors = tempGame.GetAllowedColorsArray();        // Pobieramy kolory z gry
-            _codeLength = tempGame.CodeLength; // Pobieramy długość kodu z gry
-            CurrentN = n;                     // Ustawiamy aktualną wartość N
-            CurrentK = k;                     // Ustawiamy aktualną wartość K
-            Reset();                          // Inicjalizacja poprzez reset
-        }
-
-        // Definiujemy metodę Reset która generuje wszystkie możliwe kody i resetuje licznik ruchów oraz ostatnią propozycję
-        public void Reset()
-        { 
-            // Generowanie wszystkich możliwych kodów rekurencyjnie
-            _possibleCodes = GeneratedAllCodesRecursively();   
-
-            MoveCount = 0;              // Resetowanie licznika ruchów
-            LastGuess = null;           // Resetowanie ostatniej propozycji
-        }
-
-        // Definiujemy Listę stringów GeneratedAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
-        private List<string> GeneratedAllCodesRecursively()
-        {
-            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
-            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
-            return results;                         // Zwracamy listę wygenerowanych kodów
-        }
-
-        // Rekurencyjna metoda generująca kody
-        private void GenerateRecursiveStep(string currentCode, List<string> results)
-        {
-            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
-            if (currentCode.Length == _codeLength)
-            {
-                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
-                return;                         // Kończymy rekurencję dla tego kodu
-            }
-            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
-            foreach (var color in _colors)
-            {
-                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
-                GenerateRecursiveStep(currentCode + color, results);
-            }
-        }
-
-        public string GetNextGuess()
-        {
-            // Wybieramy pierwszą propozycję z listy możliwych kodów
-            if (_possibleCodes.Count == 0)
-            {
-                // Jeśli nie ma możliwych kodów, zgłaszamy wyjątek
-                throw new InvalidOperationException("WykrytoOszustwo: Brak pasujących kodów! Użytkownik musiał podać błędną ocenę wcześniej.");
-            }
-            // Zwiększamy licznik ruchów
-            MoveCount++;
-
-            // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rrry" bądź podobne
-            if (MoveCount == 1 && _codeLength == 4 && _colors.Length >= 2)
-            {
-                // Definiuejmy optymalne otwarcie dla klasycznej gry MasterMind (4 pozycje, co najmniej 2 kolory)
-                string optimalStart = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})";
-
-                LastGuess = optimalStart;     // Klasyczne otwarcie
-
-                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy
-                if (!_possibleCodes.Contains(LastGuess)) LastGuess = _possibleCodes[0]; 
-            }
-            else
-            {
-                LastGuess = _possibleCodes[0];   // W przeciwnym razie, wybierzmy pierwszą pozycję z listy
-            }
-
-            return LastGuess;    // Zwracamy ostatnie zgadywanie
-        }
-
-        // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
-        public void ProcessFeedback(int exact, int partial)
-        {
-            // Tworzymy wynik informacji zwrotnej na podstawie dokładnych i częściowych trafień
-            var feedbackResult = new GuessResult(exact, partial);
-
-            // Filtrujemy listę możliwych kodów na podstawie informacji zwrotnej
-            _possibleCodes = _possibleCodes
-                .Where(potencialSecret => Game.CalculateScore(potencialSecret, LastGuess) == feedbackResult)
-                .ToList();
-        }
-
-        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
-        public int ReminingPossibilities => _possibleCodes.Count;
     }
 }
