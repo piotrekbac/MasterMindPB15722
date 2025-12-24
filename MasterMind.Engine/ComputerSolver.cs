@@ -401,5 +401,23 @@ namespace MasterMind.Engine
                 return LastGuess;               // Zwracamy ostatnie zgadywanie
             }   
         }
+
+        // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
+        public void ProcessFeedback(int exact, int partial)
+        {
+            var feedbackResult = new GuessResult(exact, partial);   // Tworzymy wynik informacji zwrotnej na podstawie dokładnych i częściowych trafień
+
+            // Dodajemy zgadywanie i wynik do historii
+            _history.Add((LastGuess, feedbackResult));
+
+            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+            if (!AllowErrors)
+            {
+                // Filtrujemy listę roboczą na podstawie informacji zwrotnej
+                _workingSet = _workingSet
+                    .Where(potentialSecret => Game.CalculateScore(potentialSecret, LastGuess) == feedbackResult)
+                    .ToList();
+            }
+        }
     }
 }
