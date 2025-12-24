@@ -572,7 +572,7 @@ namespace MasterMind.CLI
         static int currentK = 4;
 
         // Nowe ustawienia do Zadania 4 - tryb oszusta
-        static bool allowList = false;
+        static bool allowLies = false;
         static int maxLies = 0;
 
         static void Main(string[] args)
@@ -670,7 +670,7 @@ namespace MasterMind.CLI
             // Sprawdzamy czy użytkownik wybrał tryb oszusta
             if (key == ConsoleKey.T)
             {
-                allowList = true;                                                               // Ustawiamy tryb oszusta na true
+                allowLies = true;                                                               // Ustawiamy tryb oszusta na true
                 Console.Write("Ile błędnych odpowiedzi dopuszczasz (np. 1 lub 2)? ");           // Pobieramy i zapisujemy maksymalną liczbę kłamstw od użytkownika
                 int.TryParse(Console.ReadLine(), out maxLies);                                  // Parsujemy i zapisujemy wartość maxLies
             }
@@ -678,7 +678,7 @@ namespace MasterMind.CLI
             // Jeżeli użytkownik nie wybrał trybu oszusta
             else
             {
-                allowList = false;                                                              // Ustawiamy tryb oszusta na false
+                allowLies = false;                                                              // Ustawiamy tryb oszusta na false
                 maxLies = 0;                                                                    // Ustawiamy maksymalną liczbę kłamstw na 0
             }
 
@@ -749,11 +749,11 @@ namespace MasterMind.CLI
             // Definiujemy zmienną solver jako nowy obiekt ComputerSolver z aktualnymi wartościami N i K
             ComputerSolver solver = new ComputerSolver(currentN, currentK);
 
-            solver.AllowErrors = allowList;    // Ustawiamy tryb oszusta zgodnie z konfiguracją użytkownika
-            solver.MaxLies = maxLies;          // Ustawiamy maksymalną liczbę kłamstw zgodnie z konfiguracją użytkownika
+            solver.AllowErrors = allowLies;    // Ustawiamy tryb oszusta zgodnie z konfiguracją użytkownika
+            solver.MaxErrorsAllowed = maxLies;          // Ustawiamy maksymalną liczbę kłamstw zgodnie z konfiguracją użytkownika
 
             Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z puli: {new Game(currentN, currentK).GetAllowedColors()})");
-            if (allowList)
+            if (allowLies)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"UWAGA: Tryb odporny na błędy włączony (Max {maxLies} pomyłki). Komputer będzie myślał dłużej.");
@@ -775,7 +775,7 @@ namespace MasterMind.CLI
 
                     // Wyświetlamy propozycję komputera i liczbę pozostałych możliwych kombinacji
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.ReminingPossibilities})");
+                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.GetReminingPossibilities()})");
                     Console.ResetColor();
 
                     // Pobieramy liczbę trafień dokładnych od użytkownika

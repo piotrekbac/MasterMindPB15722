@@ -238,7 +238,7 @@ namespace MasterMind.Engine
 
         private List<(string Guess, GuessResult Result)> _history;
 
-        public string LastGuess { get; private set; }   // Ostatnia propozycja komputera
+        public string? LastGuess { get; private set; }   // Ostatnia propozycja komputera
         public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
 
         public bool AllowErrors { get; set; } = false;  // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
@@ -253,8 +253,8 @@ namespace MasterMind.Engine
             _codeLength = k;               // Pobieramy długość kodu z gry
 
             // Generowanie wszystkich możliwych kodów rekurencyjnie
-            _allPermutations = GenerateAllCodesRecursively();       // Lista wszystkich możliwych kodów
-            _workingSet = new List<string>(_allPermutations);       // Lista robocza inicjalizowana wszystkimi kodami
+            _allPossibleCodes = GenerateAllCodesRecursively();       // Lista wszystkich możliwych kodów
+            _workingSet = new List<string>(_allPossibleCodes);       // Lista robocza inicjalizowana wszystkimi kodami
             _history = new List<(string, GuessResult)>();           // Historia zgadywań i wyników
 
             Reset();        // Inicjalizacja poprzez reset
@@ -264,7 +264,7 @@ namespace MasterMind.Engine
         public void Reset()
         {
             // Resetowanie stanu gry
-            _workingSet = new List<string>(_allPermutations);   
+            _workingSet = new List<string>(_allPossibleCodes);   
 
             _history.Clear();                       // Czyszczenie historii zgadywań
             MoveCount = 0;                          // Resetowanie licznika ruchów
@@ -349,7 +349,7 @@ namespace MasterMind.Engine
                 int minErrorsFound = int.MaxValue;
 
                 // Przeglądamy wszystkie możliwe kody
-                foreach (var potencialCode in _allPermutations)
+                foreach (var potencialCode in _allPossibleCodes)
                 {
                     // Liczymy liczbę błędów dla tego potencjalnego kodu w stosunku do historii zgadywań
                     int errors = 0;
