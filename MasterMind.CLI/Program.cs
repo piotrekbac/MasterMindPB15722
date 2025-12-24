@@ -451,5 +451,18 @@ namespace MasterMind.CLI
             Console.WriteLine("Naciśnij dowolny klawisz...");
             Console.ReadKey();
         }
+
+        // Definiujemy funkcję do obsługi trybu, w którym komputer zgaduje kod
+        static void PlayComputerGuesser()
+        {
+            // Definiujemy zmienną solver jako nowy obiekt ComputerSolver z aktualnymi wartościami N i K
+            ComputerSolver solver = new ComputerSolver(currentN, currentK);
+
+            Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z puli: {new Game(currentN, currentK).GetAllowedColors()})");
+            Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy przejsć dalej...");
+            Console.ReadLine();
+
+
+        }
     }
 }
