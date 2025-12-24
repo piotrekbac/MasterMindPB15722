@@ -297,6 +297,7 @@
 // Piotr Bacior 15 722
 
 using System;
+using System.Runtime.ExceptionServices;
 using MasterMind.Engine;
 
 namespace MasterMind.CLI
@@ -329,13 +330,13 @@ namespace MasterMind.CLI
                 switch (key.Key)
                 {
                     case ConsoleKey.D1:
-                        PlayHumanGuesser(currentN, currentK);         // Funkcja do obsługi trybu, w którym człowiek zgaduje kod
+                        PlayHumanGuesser();         // Funkcja do obsługi trybu, w którym człowiek zgaduje kod
                         break;
                     case ConsoleKey.D2:
-                        PlayComputerGuesser(currentN, currentK);      // Funkcja do obsługi trybu, w którym komputer zgaduje kod
+                        PlayComputerGuesser();      // Funkcja do obsługi trybu, w którym komputer zgaduje kod
                         break;
                     case ConsoleKey.D3:
-                        SettingsMenu();                                // Funkcja do obsługi menu ustawień gry
+                        ConfigureGameParameters();                                // Funkcja do obsługi menu ustawień gry
                         break;
                     case ConsoleKey.D4:
                         return;                                         // Wyjście z programu
@@ -538,7 +539,17 @@ namespace MasterMind.CLI
             // ustawiamy kolor dla trafień na złej pozycji i wyświetlamy je
             Console.ForegroundColor = ConsoleColor.White;
 
-           
+            // Wyświetlamy trafienia na złej pozycji
+            for (int i = 0; i < result.PartialMatches; i++)
+            {
+                Console.WriteLine("o ");
+            }
+
+            // Resetujemy kolor konsoli do domyślnego
+            Console.ResetColor();
+
+            // Wyświetlamy dokładne liczby trafień i trafień na złej pozycji
+            Console.WriteLine($"({result.ExactMatches}, {result.PartialMatches})");
         }
     }
 }
