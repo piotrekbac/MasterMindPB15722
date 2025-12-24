@@ -522,5 +522,23 @@ namespace MasterMind.CLI
             Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego 
 
         }
+
+        // Funkcja do obsługi menu ustawień gry
+        static void DisplayResult(GuessResult result)
+        {
+            // Wyświetlamy wynik zgadywania za pomocą symboli i ustawiamy odpowiedni kolor tła konsoli
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+
+            // Wyświetlamy idealne trafienia
+            for (int i = 0; i < result.ExactMatches; i++)
+            {
+                Console.WriteLine("* ");
+            }
+
+            // ustawiamy kolor dla trafień na złej pozycji i wyświetlamy je
+            Console.ForegroundColor = ConsoleColor.White;
+
+           
+        }
     }
 }
