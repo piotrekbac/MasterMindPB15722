@@ -321,6 +321,26 @@ namespace MasterMind.CLI
                 Console.WriteLine("4. Wyjście\n");
                 Console.Write("Wybierz opcję");
 
+                // Definiujemy zmienną do przechowywania wyboru użytkownika
+                var key = Console.ReadKey();
+                Console.WriteLine();
+
+                // Obsługujemy wybór użytkownika za pomocą instrukcji switch
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1:
+                        PlayHumanGuesser(currentN, currentK);         // Funkcja do obsługi trybu, w którym człowiek zgaduje kod
+                        break;
+                    case ConsoleKey.D2:
+                        PlayComputerGuesser(currentN, currentK);      // Funkcja do obsługi trybu, w którym komputer zgaduje kod
+                        break;
+                    case ConsoleKey.D3:
+                        SettingsMenu();                                // Funkcja do obsługi menu ustawień gry
+                        break;
+                    case ConsoleKey.D4:
+                        return;                                         // Wyjście z programu
+                }
+
             }
         }
 
