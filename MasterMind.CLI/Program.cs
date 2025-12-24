@@ -303,9 +303,25 @@ namespace MasterMind.CLI
 {
     class Program
     {
+        // Ustawiamy domyślne wartości N i K
+        static int currentN = 6;
+        static int currentK = 4;
+
         static void Main(string[] args)
         {
-            
+            while (true)
+            {
+                // Wyświetlamy menu gry Master Mind
+                Console.Clear();
+                Console.WriteLine("-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\n");
+                Console.WriteLine("Autor: Piotr Bacior 15 722\n");
+                Console.WriteLine("1. Nowa gra (Człowiek VS Komputer)");
+                Console.WriteLine("2. Nowa gra (Komputer vs Człowiek) - Przemyśl swój kod");
+                Console.WriteLine("3. Ustawienia gry (N i K)");
+                Console.WriteLine("4. Wyjście\n");
+                Console.Write("Wybierz opcję");
+
+            }
         }
 
     }
