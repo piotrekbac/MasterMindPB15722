@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -245,6 +246,20 @@ namespace MasterMind.Engine
 
         public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
 
+        public ComputerSolver(int n = 6, int k = 4)
+        {
+            var tempGame = new Game(n, k);                      // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+            _colors = tempGame.GetAllowedColorsArray();         // Pobieramy kolory z gry
+            _codeLength = k;               // Pobieramy długość kodu z gry
 
+            // Generowanie wszystkich możliwych kodów rekurencyjnie
+            _allPermutations = GenerateAllCodesRecursively();       // Lista wszystkich możliwych kodów
+            _workingSet = new List<string>(_allPermutations);       // Lista robocza inicjalizowana wszystkimi kodami
+            _history = new List<(string, GuessResult)>();           // Historia zgadywań i wyników
+
+            Reset();        // Inicjalizacja poprzez reset
+        }
+
+       
     }
 }
