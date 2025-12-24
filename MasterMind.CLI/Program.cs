@@ -340,8 +340,58 @@ namespace MasterMind.CLI
                     case ConsoleKey.D4:
                         return;                                         // Wyjście z programu
                 }
-
             }
+        }
+
+        // Definiuejmy funkcję do obsługi menu ustawień gry
+        static void ConfigureGameParameters()
+        {
+            Console.WriteLine("\n =-=-=-=- KONFIGURACJA -=-=-=-=-= ");
+            Console.WriteLine("Wymagania: 6 <= n <= 8, 4 <= k <= 6, k < n");
+
+            // Definiujemy zmienne do przechowywania nowych wartości N i K
+            int newN = 0;
+
+            // Pętla do pobierania i walidacji wartości N
+            while (true)
+            {
+                Console.WriteLine("Podaj liczbę kolorów (n) [6-8]");
+
+                // Pobieramy i walidujemy wartość N od użytkownika
+                if (int.TryParse(Console.ReadLine(), out newN) && newN >= 6 && newN <= 8) break;
+
+                Console.WriteLine("Błąd. Podaj liczbę 6,7 lub 8.");
+            }
+
+            // Definiujemy zmienną do przechowywania nowej wartości K
+            int newK = 0;
+
+            // Pętla do pobierania i walidacji wartości K
+            while (true)
+            {
+                Console.WriteLine($"Podaj długość kodów (k) [4-6] (musi być < {newN}): ");
+
+                // Pobieramy i walidujemy wartość K od użytkownika
+                if (int.TryParse(Console.ReadLine(), out newK) && newK >= 4 && newK <= 6)
+                {
+                    // Sprawdzamy czy K jest mniejsze od N
+                    if (newK < newN) break;
+
+                    // Wyświetlamy komunikat o błędzie jeżeli K nie jest mniejsze od N
+                    else
+                    {
+                        Console.WriteLine($"Błąd. Długość kodu musi być mniejsza od liczby kolorów ({newK}). ");
+                    }
+                }
+
+                // Wyświetlamy komunikat o błędzie jeżeli wartość K jest nieprawidłowa
+                else
+                {
+                    Console.WriteLine("Błąd. Podaj liczbę 4, 5 lub 6.");
+                }
+            }
+
+
         }
 
     }
