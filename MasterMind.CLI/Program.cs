@@ -391,8 +391,51 @@ namespace MasterMind.CLI
                 }
             }
 
-
+            currentN = newN;    // Aktualizujemy wartość N
+            currentK = newK;    // Aktualizujemy wartość K
+            Console.WriteLine("Ustawienia zapisane! Naciśnij klawisz...");
+            Console.ReadKey();  // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego
         }
 
+        // Definiujemy funkcję do obsługi menu ustawień gry
+        static void PlayHumanGuesser()
+        {
+            // Tworzymy nową grę MasterMind z aktualnymi wartościami N i K
+            Game game = new Game(currentN, currentK);
+
+            Console.WriteLine($"\n[TRYB] Zgadujesz kod ({currentK} znaki z {currentN} kolorów).");
+            Console.WriteLine($"Dostępne kolory: {game.GetAllowedColors()}");
+
+            // Główna pętla gry - kontynuujemy aż do zakończenia gry
+            while (!game.isGameOver)
+            {
+                Console.Write($"Próba {game.AttemptsUsed + 1}");
+
+                // Tworzymy zmienną input do przechowywania danych wejściowych użytkownika
+                string input = Console.ReadLine()?.Trim().ToLower();
+
+                // Walidacja danych wejściowych - sprawdzamy czy wprowadzono dokładnie K liter
+                if (string.IsNullOrEmpty(input) || input.Length != currentK)
+                {
+                    Console.WriteLine($"Błąd: Wpisz dokładnie {currentK} znaki.");
+                    continue;
+                }
+
+                // Funkcja do wyświetlania wyniku zgadywania
+                try
+                {
+                    var result = game.EvaluateGuess(input);         // oceniamy zgadywanie użytkownika
+                    DisplayResult(result);                          // wyświetlamy wynik zgadywania
+                }
+
+                // Obsługujemy wyjątki i wyświetlamy komunikaty o wszelkich błędach. 
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
+            }
+
+           
+        }
     }
 }
