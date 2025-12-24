@@ -749,8 +749,18 @@ namespace MasterMind.CLI
             // Definiujemy zmienną solver jako nowy obiekt ComputerSolver z aktualnymi wartościami N i K
             ComputerSolver solver = new ComputerSolver(currentN, currentK);
 
+            solver.AllowErrors = allowList;    // Ustawiamy tryb oszusta zgodnie z konfiguracją użytkownika
+            solver.MaxLies = maxLies;          // Ustawiamy maksymalną liczbę kłamstw zgodnie z konfiguracją użytkownika
+
             Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z puli: {new Game(currentN, currentK).GetAllowedColors()})");
-            Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy przejsć dalej...");
+            if (allowList)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"UWAGA: Tryb odporny na błędy włączony (Max {maxLies} pomyłki). Komputer będzie myślał dłużej.");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("Naciśnij ENTER, gdy będziesz gotowy...");
             Console.ReadLine();
 
             bool solved = false;    // Flaga do kontrolowania pętli zgadywania komputera
