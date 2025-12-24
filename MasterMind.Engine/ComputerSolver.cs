@@ -272,6 +272,12 @@ namespace MasterMind.Engine
             DetectedErrorsForBestCondidate = 0;     // Resetowanie liczby wykrytych błędów
         }
 
-
+        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+        private List<string> GenerateAllCodesRecursively()
+        {
+            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
+            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
+            return results;                         // Zwracamy listę wygenerowanych kodów
+        }
     }
 }
