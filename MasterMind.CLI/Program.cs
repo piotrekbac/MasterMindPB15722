@@ -659,6 +659,29 @@ namespace MasterMind.CLI
                 }
             }
 
+            // Nowe ustawienia do Zadania 4 - tryb oszusta
+            Console.WriteLine("\n--- Opcje oszukiwania ---");
+            Console.Write("Czy dopuszczasz pomyłki w odpowiedziach (t/n)");
+
+            // Definiujemy zmienną do przechowywania wyboru użytkownika
+            var key = Console.ReadKey().Key;
+            Console.WriteLine();
+
+            // Sprawdzamy czy użytkownik wybrał tryb oszusta
+            if (key == ConsoleKey.T)
+            {
+                allowList = true;                                                               // Ustawiamy tryb oszusta na true
+                Console.Write("Ile błędnych odpowiedzi dopuszczasz (np. 1 lub 2)? ");           // Pobieramy i zapisujemy maksymalną liczbę kłamstw od użytkownika
+                int.TryParse(Console.ReadLine(), out maxLies);                                  // Parsujemy i zapisujemy wartość maxLies
+            }
+
+            // Jeżeli użytkownik nie wybrał trybu oszusta
+            else
+            {
+                allowList = false;                                                              // Ustawiamy tryb oszusta na false
+                maxLies = 0;                                                                    // Ustawiamy maksymalną liczbę kłamstw na 0
+            }
+
             currentN = newN;    // Aktualizujemy wartość N
             currentK = newK;    // Aktualizujemy wartość K
             Console.WriteLine("Ustawienia zapisane! Naciśnij klawisz...");
