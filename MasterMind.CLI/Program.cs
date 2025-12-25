@@ -886,10 +886,27 @@ namespace MasterMind.CLI
                 Console.WriteLine("4. Wyjście\n");
                 Console.WriteLine("Wybierz opcję: ");
 
+                // Definiujemy zmienną do przechowywania wyboru użytkownika
                 var key = Console.ReadKey();
                 Console.WriteLine();
 
+                // Obsługujemy wybór użytkownika za pomocą instrukcji switch
+                switch (key.Key)
+                {
+                    case ConsoleKey.D1;
+                        PlayHumanGuesser();
+                        break;
 
+                    case ConsoleKey.D2;
+                        PlayComputerGuesser();
+                        break;
+                    case ConsoleKey.D3;
+                        ConfigureGameParameters();
+                        break;
+                    case ConsoleKey.D4;
+                        return;
+
+                }
             }
         }
     }
