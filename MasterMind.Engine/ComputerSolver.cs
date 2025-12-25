@@ -451,5 +451,19 @@ namespace MasterMind.Engine
         public bool AllowErrors { get; set; } = false;                      // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
         public int MaxErrorsAllowed { get; set; } = 0;                      // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
         public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
+
+        // Tworzymy metodę ComputerSolver, która przyjmuje parametry n, k oraz useDigits i wykonuje metodę Reset
+        public ComputerSolver (int n = 6, int k = 4, bool useDigits = false)
+        {
+            var tempGame = new Game(n, k, useDigits);                  // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+            _colors = tempGame.GetAllowedColorsArray();                 // Pobieramy kolory z gry
+            _codeLength = k;                                            // Pobieramy długość kodu z gry
+
+            // Generowanie wszystkich możliwych kodów rekurencyjnie
+            _allPossibleCodes = GenerateAllCodesRecursively();          // Lista wszystkich możliwych kodów
+            _workingSet = new List<string>(_allPossibleCodes);          // Lista robocza inicjalizowana wszystkimi kodami
+            _history = new List<(string, GuessResult)>();               // Historia zgadywań i wyników
+            Reset();                                                    // Inicjalizacja poprzez reset  
+        }
     }
 }
