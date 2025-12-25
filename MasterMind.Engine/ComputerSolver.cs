@@ -226,211 +226,230 @@ namespace MasterMind.Engine
 
     // =-=-=-=-=-=--=-=-=-= ZADANIE 4 =-=-=-=-=-=--=-=-=-= 
 
-    // Klasa odpowiedzialna za logikę rozwiązywania kodu przez komputer - wersja z trybem klasycznym i zaawansowanym
+    //    // Klasa odpowiedzialna za logikę rozwiązywania kodu przez komputer - wersja z trybem klasycznym i zaawansowanym
+    //    public class ComputerSolver
+    //    {
+    //        private readonly char[] _colors;         // Kolory dostępne w grze MasterMind
+    //        private readonly int _codeLength;        // Długość kodu do odgadnięcia
+
+    //        private readonly List<string> _allPossibleCodes;    // Lista wszystkich możliwych kodów
+
+    //        private List<string> _workingSet;            // Lista robocza (używana w trybie klasycznym)
+
+    //        private List<(string Guess, GuessResult Result)> _history;
+
+    //        public string? LastGuess { get; private set; }   // Ostatnia propozycja komputera
+    //        public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
+
+    //        public bool AllowErrors { get; set; } = false;  // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
+    //        public int MaxErrorsAllowed { get; set; } = 0;  // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
+
+    //        public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
+
+    //        public ComputerSolver(int n = 6, int k = 4)
+    //        {
+    //            var tempGame = new Game(n, k);                      // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+    //            _colors = tempGame.GetAllowedColorsArray();         // Pobieramy kolory z gry
+    //            _codeLength = k;               // Pobieramy długość kodu z gry
+
+    //            // Generowanie wszystkich możliwych kodów rekurencyjnie
+    //            _allPossibleCodes = GenerateAllCodesRecursively();       // Lista wszystkich możliwych kodów
+    //            _workingSet = new List<string>(_allPossibleCodes);       // Lista robocza inicjalizowana wszystkimi kodami
+    //            _history = new List<(string, GuessResult)>();           // Historia zgadywań i wyników
+
+    //            Reset();        // Inicjalizacja poprzez reset
+    //        }
+
+    //        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+    //        public void Reset()
+    //        {
+    //            // Resetowanie stanu gry
+    //            _workingSet = new List<string>(_allPossibleCodes);   
+
+    //            _history.Clear();                       // Czyszczenie historii zgadywań
+    //            MoveCount = 0;                          // Resetowanie licznika ruchów
+    //            LastGuess = null;                       // Resetowanie ostatniej propozycji
+    //            DetectedErrorsForBestCondidate = 0;     // Resetowanie liczby wykrytych błędów
+    //        }
+
+    //        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+    //        private List<string> GenerateAllCodesRecursively()
+    //        {
+    //            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
+    //            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
+    //            return results;                         // Zwracamy listę wygenerowanych kodów
+    //        }
+
+    //        // Definiujemy rekurencyjną metodę generującą kody
+    //        private void GenerateRecursiveStep(string currentCode, List<string> results)
+    //        {
+    //            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
+    //            if (currentCode.Length == _codeLength)
+    //            {
+    //                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
+    //                return;                         // Kończymy rekurencję dla tego kodu
+    //            }
+    //            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
+    //            foreach (var color in _colors)
+    //            {
+    //                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
+    //                GenerateRecursiveStep(currentCode + color, results);
+    //            }
+    //        }
+
+    //        // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
+    //        public string GetNextGuess()
+    //        {
+    //            MoveCount++;                   // Zwiększamy licznik ruchów
+
+    //            // Wybieramy pierwszą propozycję z listy możliwych kodów
+    //            if (MoveCount == 1)
+    //            {
+    //                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rryy" bądź podobne
+    //                if (_codeLength >= 4 && _colors.Length >= 2)
+    //                {
+    //                    LastGuess = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})" + (_codeLength > 4 ? new string(_colors[0], _codeLength - 4) : ""); // Optymalne otwarcie dla klasycznej gry MasterMind
+    //                }
+
+    //                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+    //                else
+    //                {
+    //                    // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy roboczej
+    //                    LastGuess = _allPossibleCodes[0]; 
+    //                }
+
+    //                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+    //                if (!AllowErrors && !_workingSet.Contains(LastGuess)) LastGuess = _workingSet[0]; 
+    //                {
+    //                    // W przeciwnym razie, wybieramy pierwszą pozycję z listy roboczej
+    //                    return LastGuess;    
+    //                }
+    //            }
+
+    //            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+    //            if (!AllowErrors)
+    //            {
+    //                // Filtrujemy listę roboczą na podstawie historii zgadywań
+    //                if (_workingSet.Count == 0)
+    //                {
+    //                    throw new InvalidOperationException("Brak pasujących kodów! Sprzeczność w odpowiedziach.");
+    //                }
+
+    //                LastGuess = _workingSet[0];     // Wybieramy pierwszą pozycję z listy roboczej
+    //                return LastGuess;               // Zwracamy ostatnie zgadywanie
+    //            }
+
+    //            // Tryb zaawansowany - zezwalający na błędy użytkownika, wolniejsze działanie, analiza historii
+    //            else
+    //            {
+    //                // Analizujemy wszystkie możliwe kody i wybieramy te, które minimalizują liczbę sprzeczności z historią zgadywań
+    //                var candidates = new List<string>();
+
+    //                // Najmniejsza liczba błędów znaleziona jak dotąd
+    //                int minErrorsFound = int.MaxValue;
+
+    //                // Przeglądamy wszystkie możliwe kody
+    //                foreach (var potencialCode in _allPossibleCodes)
+    //                {
+    //                    // Liczymy liczbę błędów dla tego potencjalnego kodu w stosunku do historii zgadywań
+    //                    int errors = 0;
+
+    //                    // Sprawdzamy każdy wpis w historii zgadywań
+    //                    foreach (var entry in _history)
+    //                    {
+    //                        // Symulujemy wynik dla potencjalnego kodu i porównujemy z rzeczywistym wynikiem
+    //                        var simulatedResult = Game.CalculateScore(potencialCode, entry.Guess);
+
+    //                        // Jeśli wynik się nie zgadza, zwiększamy licznik błędów
+    //                        if (simulatedResult != entry.Result)
+    //                        {
+    //                            errors++;   // Zwiększamy liczbę błędów
+    //                        }
+
+    //                        // Przerywamy, jeśli liczba błędów przekracza już najlepszy znaleziony wynik
+    //                        if (errors > minErrorsFound && minErrorsFound != int.MaxValue)
+    //                        {
+    //                            break;
+    //                        }
+    //                    }
+
+    //                    // Aktualizujemy listę kandydatów, jeśli znaleźliśmy mniej błędów
+    //                    if (errors < minErrorsFound)
+    //                    {
+    //                        minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
+    //                        candidates.Clear();                 // Czyścimy listę kandydatów
+    //                        candidates.Add(potencialCode);      // Dodajemy nowego kandydata
+    //                    }
+
+    //                    // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
+    //                    else if (errors == minErrorsFound)
+    //                    {
+    //                        candidates.Add(potencialCode);      // Dodajemy kandydata do listy
+    //                    }
+    //                }
+
+    //                // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
+    //                DetectedErrorsForBestCondidate = minErrorsFound;
+
+    //                // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
+    //                if (minErrorsFound > MaxErrorsAllowed)
+    //                {
+    //                    throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności, a zezwoliłeś na max {MaxErrorsAllowed}. Za dużo kłamstw!");
+    //                }
+
+    //                LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
+    //                return LastGuess;               // Zwracamy ostatnie zgadywanie
+    //            }   
+    //        }
+
+    //        // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
+    //        public void ProcessFeedback(int exact, int partial)
+    //        {
+    //            var feedbackResult = new GuessResult(exact, partial);   // Tworzymy wynik informacji zwrotnej na podstawie dokładnych i częściowych trafień
+
+    //            // Dodajemy zgadywanie i wynik do historii
+    //            _history.Add((LastGuess, feedbackResult));
+
+    //            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+    //            if (!AllowErrors)
+    //            {
+    //                // Filtrujemy listę roboczą na podstawie informacji zwrotnej
+    //                _workingSet = _workingSet
+    //                    .Where(potentialSecret => Game.CalculateScore(potentialSecret, LastGuess) == feedbackResult)
+    //                    .ToList();
+    //            }
+    //        }
+
+    //        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
+    //        public int GetReminingPossibilities()
+    //        {
+    //            // Tryb klasyczny - bez błędów 
+    //            if (!AllowErrors)
+    //            {
+    //                return _workingSet.Count;       // Zwracamy liczbę pozostałych możliwości w trybie klasycznym
+    //            }
+
+    //            // W trybie zaawansowanym, zwracamy liczbę wszystkich możliwych kodów
+    //            return -1;
+    //        }
+    //    }
+    //}
+
+
+    // =-=-=-=-=-=--=-=-=-= ZADANIE 5 =-=-=-=-=-=--=-=-=-= 
+
     public class ComputerSolver
     {
-        private readonly char[] _colors;         // Kolory dostępne w grze MasterMind
-        private readonly int _codeLength;        // Długość kodu do odgadnięcia
+        private readonly char[] _colors;                            // Kolory dostępne w grze MasterMind
+        private readonly int _codeLength;                           // Długość kodu do odgadnięcia
+        private readonly List<string> _allPossibleCodes;            // Lista wszystkich możliwych kodów
+        private List<string> _workingSet;                           // Lista robocza (używana w trybie klasycznym)
+        private List<(string Guess, GuessResult Result)> _history;  // Historia zgadywań i wyników
 
-        private readonly List<string> _allPossibleCodes;    // Lista wszystkich możliwych kodów
-
-        private List<string> _workingSet;            // Lista robocza (używana w trybie klasycznym)
-
-        private List<(string Guess, GuessResult Result)> _history;
-
-        public string? LastGuess { get; private set; }   // Ostatnia propozycja komputera
-        public int MoveCount { get; private set; }      // Liczba ruchów wykonanych przez komputer
-
-        public bool AllowErrors { get; set; } = false;  // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
-        public int MaxErrorsAllowed { get; set; } = 0;  // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
-
+        public string? LastGuess { get; private set; }                      // Ostatnia propozycja komputera'
+        public int MoveCount { get; private set; }                          // Liczba ruchów wykonanych przez komputer
+        public bool AllowErrors { get; set; } = false;                      // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
+        public int MaxErrorsAllowed { get; set; } = 0;                      // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
         public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
-
-        public ComputerSolver(int n = 6, int k = 4)
-        {
-            var tempGame = new Game(n, k);                      // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
-            _colors = tempGame.GetAllowedColorsArray();         // Pobieramy kolory z gry
-            _codeLength = k;               // Pobieramy długość kodu z gry
-
-            // Generowanie wszystkich możliwych kodów rekurencyjnie
-            _allPossibleCodes = GenerateAllCodesRecursively();       // Lista wszystkich możliwych kodów
-            _workingSet = new List<string>(_allPossibleCodes);       // Lista robocza inicjalizowana wszystkimi kodami
-            _history = new List<(string, GuessResult)>();           // Historia zgadywań i wyników
-
-            Reset();        // Inicjalizacja poprzez reset
-        }
-
-        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
-        public void Reset()
-        {
-            // Resetowanie stanu gry
-            _workingSet = new List<string>(_allPossibleCodes);   
-
-            _history.Clear();                       // Czyszczenie historii zgadywań
-            MoveCount = 0;                          // Resetowanie licznika ruchów
-            LastGuess = null;                       // Resetowanie ostatniej propozycji
-            DetectedErrorsForBestCondidate = 0;     // Resetowanie liczby wykrytych błędów
-        }
-
-        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
-        private List<string> GenerateAllCodesRecursively()
-        {
-            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
-            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
-            return results;                         // Zwracamy listę wygenerowanych kodów
-        }
-
-        // Definiujemy rekurencyjną metodę generującą kody
-        private void GenerateRecursiveStep(string currentCode, List<string> results)
-        {
-            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
-            if (currentCode.Length == _codeLength)
-            {
-                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
-                return;                         // Kończymy rekurencję dla tego kodu
-            }
-            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
-            foreach (var color in _colors)
-            {
-                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
-                GenerateRecursiveStep(currentCode + color, results);
-            }
-        }
-
-        // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
-        public string GetNextGuess()
-        {
-            MoveCount++;                   // Zwiększamy licznik ruchów
-
-            // Wybieramy pierwszą propozycję z listy możliwych kodów
-            if (MoveCount == 1)
-            {
-                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rryy" bądź podobne
-                if (_codeLength >= 4 && _colors.Length >= 2)
-                {
-                    LastGuess = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})" + (_codeLength > 4 ? new string(_colors[0], _codeLength - 4) : ""); // Optymalne otwarcie dla klasycznej gry MasterMind
-                }
-
-                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
-                else
-                {
-                    // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy roboczej
-                    LastGuess = _allPossibleCodes[0]; 
-                }
-
-                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
-                if (!AllowErrors && !_workingSet.Contains(LastGuess)) LastGuess = _workingSet[0]; 
-                {
-                    // W przeciwnym razie, wybieramy pierwszą pozycję z listy roboczej
-                    return LastGuess;    
-                }
-            }
-
-            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
-            if (!AllowErrors)
-            {
-                // Filtrujemy listę roboczą na podstawie historii zgadywań
-                if (_workingSet.Count == 0)
-                {
-                    throw new InvalidOperationException("Brak pasujących kodów! Sprzeczność w odpowiedziach.");
-                }
-
-                LastGuess = _workingSet[0];     // Wybieramy pierwszą pozycję z listy roboczej
-                return LastGuess;               // Zwracamy ostatnie zgadywanie
-            }
-
-            // Tryb zaawansowany - zezwalający na błędy użytkownika, wolniejsze działanie, analiza historii
-            else
-            {
-                // Analizujemy wszystkie możliwe kody i wybieramy te, które minimalizują liczbę sprzeczności z historią zgadywań
-                var candidates = new List<string>();
-
-                // Najmniejsza liczba błędów znaleziona jak dotąd
-                int minErrorsFound = int.MaxValue;
-
-                // Przeglądamy wszystkie możliwe kody
-                foreach (var potencialCode in _allPossibleCodes)
-                {
-                    // Liczymy liczbę błędów dla tego potencjalnego kodu w stosunku do historii zgadywań
-                    int errors = 0;
-
-                    // Sprawdzamy każdy wpis w historii zgadywań
-                    foreach (var entry in _history)
-                    {
-                        // Symulujemy wynik dla potencjalnego kodu i porównujemy z rzeczywistym wynikiem
-                        var simulatedResult = Game.CalculateScore(potencialCode, entry.Guess);
-
-                        // Jeśli wynik się nie zgadza, zwiększamy licznik błędów
-                        if (simulatedResult != entry.Result)
-                        {
-                            errors++;   // Zwiększamy liczbę błędów
-                        }
-
-                        // Przerywamy, jeśli liczba błędów przekracza już najlepszy znaleziony wynik
-                        if (errors > minErrorsFound && minErrorsFound != int.MaxValue)
-                        {
-                            break;
-                        }
-                    }
-
-                    // Aktualizujemy listę kandydatów, jeśli znaleźliśmy mniej błędów
-                    if (errors < minErrorsFound)
-                    {
-                        minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
-                        candidates.Clear();                 // Czyścimy listę kandydatów
-                        candidates.Add(potencialCode);      // Dodajemy nowego kandydata
-                    }
-
-                    // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
-                    else if (errors == minErrorsFound)
-                    {
-                        candidates.Add(potencialCode);      // Dodajemy kandydata do listy
-                    }
-                }
-
-                // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
-                DetectedErrorsForBestCondidate = minErrorsFound;
-
-                // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
-                if (minErrorsFound > MaxErrorsAllowed)
-                {
-                    throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności, a zezwoliłeś na max {MaxErrorsAllowed}. Za dużo kłamstw!");
-                }
-
-                LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
-                return LastGuess;               // Zwracamy ostatnie zgadywanie
-            }   
-        }
-
-        // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
-        public void ProcessFeedback(int exact, int partial)
-        {
-            var feedbackResult = new GuessResult(exact, partial);   // Tworzymy wynik informacji zwrotnej na podstawie dokładnych i częściowych trafień
-
-            // Dodajemy zgadywanie i wynik do historii
-            _history.Add((LastGuess, feedbackResult));
-
-            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
-            if (!AllowErrors)
-            {
-                // Filtrujemy listę roboczą na podstawie informacji zwrotnej
-                _workingSet = _workingSet
-                    .Where(potentialSecret => Game.CalculateScore(potentialSecret, LastGuess) == feedbackResult)
-                    .ToList();
-            }
-        }
-
-        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
-        public int GetReminingPossibilities()
-        {
-            // Tryb klasyczny - bez błędów 
-            if (!AllowErrors)
-            {
-                return _workingSet.Count;       // Zwracamy liczbę pozostałych możliwości w trybie klasycznym
-            }
-
-            // W trybie zaawansowanym, zwracamy liczbę wszystkich możliwych kodów
-            return -1;
-        }
     }
 }
