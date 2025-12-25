@@ -865,6 +865,31 @@ namespace MasterMind.CLI
 {
     class Program
     {
-        
+        // Ustawienia globalne 
+        static int currentN = 6;
+        static int currentK = 4;
+        static bool allowLies = false;
+        static int maxLies = 0;
+        static bool useDigitsMode = false;  // Nowa zmienna do trybu cyfr
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                string modeInfo = useDigitsMode ? "Cyfry" : "Litery"; // Informacja o aktualnym trybie
+                Console.WriteLine($"-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\nTryb: {modeInfo}\n");
+                Console.WriteLine("1. Nowa gra (Człowiek VS Komputer)");
+                Console.WriteLine("2. Nowa gra (Komputer vs Człowiek) - Przemyśl swój kod");
+                Console.WriteLine("3. Ustawienia gry (N i K)");
+                Console.WriteLine("4. Wyjście\n");
+                Console.WriteLine("Wybierz opcję: ");
+
+                var key = Console.ReadKey();
+                Console.WriteLine();
+
+
+            }
+        }
     }
 }
