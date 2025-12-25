@@ -450,12 +450,12 @@ namespace MasterMind.Engine
         public int MoveCount { get; private set; }                          // Liczba ruchów wykonanych przez komputer
         public bool AllowErrors { get; set; } = false;                      // Flaga trybu zaawansowanego (zezwalającego na błędy użytkownika)
         public int MaxErrorsAllowed { get; set; } = 0;                      // Maksymalna liczba błędów dozwolonych w trybie zaawansowanym
-        public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
+        public int DetectedErrorsForBestCandidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
 
         // Tworzymy metodę ComputerSolver, która przyjmuje parametry n, k oraz useDigits i wykonuje metodę Reset
         public ComputerSolver(int n = 6, int k = 4, bool useDigits = false)
         {
-            var tempGame = new Game(n, k, useDigits);                  // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
+            var tempGame = new Game(n, k, 12, useDigits);                  // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
             _colors = tempGame.GetAllowedColorsArray();                 // Pobieramy kolory z gry
             _codeLength = k;                                            // Pobieramy długość kodu z gry
 
@@ -473,7 +473,7 @@ namespace MasterMind.Engine
             _history.Clear();                                   // Czyszczenie historii zgadywań
             MoveCount = 0;                                      // Resetowanie licznika ruchów
             LastGuess = null;                                   // Resetowanie ostatniej propozycji
-            DetectedErrorsForBestCondidate = 0;                 // Resetowanie liczby wykrytych błędów
+            DetectedErrorsForBestCandidate = 0;                 // Resetowanie liczby wykrytych błędów
         }
 
         // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
@@ -498,44 +498,47 @@ namespace MasterMind.Engine
             foreach (var colors in _colors)
             {
                 // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
-                GenerateAllCodesRecursively(currentCode + colors, results);
+                GenerateRecursiveStep(currentCode + colors, results);
             }
         }
 
         // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
         public string GetNextGuess()
         {
-            MoveCount++;                   // Zwiększamy licznik ruchów
+            MoveCount++;    // Zwiększamy licznik ruchów
 
-            // Strategia otwarcia np. 0011 dla cyfr lub rryy dla kolorów
-            // ponieważ _colors[0] to teraz '0' w trybie cyfr, ten kod zadziała
+            // --- STRATEGIA PIERWSZEGO RUCHU ---
             if (MoveCount == 1)
             {
-                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "0011" bądź podobne
+                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "rryy" bądź podobne
                 if (_codeLength >= 4 && _colors.Length >= 2)
                 {
                     // Definiuejmy optymalne otwarcie dla klasycznej gry MasterMind (4 pozycje, co najmniej 2 kolory)
                     string extraPadding = _codeLength > 4 ? new string(_colors[0], _codeLength - 4) : "";
 
-                    // Ustawiamy ostatnie zgadywanie na optymalne otwarcie
-                    LastGuess = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})" + extraPadding; // Optymalne otwarcie dla klasycznej gry MasterMind
+                    // Kod musi być czysty (np. "0011"), inaczej gra wyrzuci błąd długości.
+                    LastGuess = $"{_colors[0]}{_colors[0]}{_colors[1]}{_colors[1]}{extraPadding}";
                 }
 
-                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy wszystkich możliwych kodów
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy
                 else
                 {
-                    LastGuess = _allPossibleCodes[0]; // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy wszystkich możliwych kodów
+                    // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy wszystkich możliwych kodów
+                    LastGuess = _allPossibleCodes[0];
                 }
 
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
                 if (!AllowErrors && !_workingSet.Contains(LastGuess))
                 {
-                    LastGuess = _workingSet[0];  // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+                    // W przeciwnym razie, wybieramy pierwszą pozycję z listy roboczej
+                    LastGuess = _workingSet[0];
                 }
 
-                return LastGuess;    // Zwracamy ostatnie zgadywanie
+                // Zwracamy ostatnie zgadywanie
+                return LastGuess;
             }
 
-            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+            // --- TRYB KLASYCZNY ---
             if (!AllowErrors)
             {
                 // Filtrujemy listę roboczą na podstawie historii zgadywań
@@ -543,56 +546,69 @@ namespace MasterMind.Engine
                 {
                     throw new InvalidOperationException("Brak pasujących kodów! Sprzeczność w odpowiedziach.");
                 }
-                LastGuess = _workingSet[0];     // Wybieramy pierwszą pozycję z listy roboczej
-                return LastGuess;               // Zwracamy ostatnie zgadywanie
+                // Wybieramy pierwszą pozycję z listy roboczej
+                LastGuess = _workingSet[0];
+
+                // Zwracamy ostatnie zgadywanie
+                return LastGuess;
             }
 
 
+            // --- TRYB ZAAWANSOWANY (ZADANIE 4/5) ---
             else
             {
-                var candidates = new List<string>();    // Analizujemy wszystkie możliwe kody i wybieramy te, które minimalizują liczbę sprzeczności z historią zgadywań
-                int minErrorsFound = int.MaxValue;      // Najmniejsza liczba błędów znaleziona jak dotąd
+                // NAPRAWA 4: Kompletna przebudowa logiki pętli (była rozsypana)
+                var candidates = new List<string>();
+                int minErrorsFound = int.MaxValue;
 
+                // Iterujemy po KAŻDYM możliwym kodzie
                 foreach (var potentialCode in _allPossibleCodes)
                 {
-                    var simulatedResult = Game.CalculateScore(potentialCode, LastGuess); // Symulujemy wynik dla potencjalnego kodu i porównujemy z rzeczywistym wynikiem
-                    if (simulatedResult != feedbackResult)
+                    int errors = 0; // Deklaracja zmiennej errors musi być TU
+
+                    // Sprawdzamy zgodność z historią gry
+                    foreach (var entry in _history)
                     {
-                        errors++;   // Zwiększamy liczbę błędów
+                        var simulatedResult = Game.CalculateScore(potentialCode, entry.Guess);
+
+                        // Porównujemy wynik symulacji z prawdziwym wynikiem z historii
+                        if (simulatedResult != entry.Result)
+                        {
+                            errors++;
+                        }
+
+                        // Optymalizacja
+                        if (errors > minErrorsFound && minErrorsFound != int.MaxValue) break;
                     }
 
-
-                    if (errors > minErrorsFound && minErrorsFound != int.MaxValue)
+                    // Logika wyboru najlepszego kandydata
+                    if (errors < minErrorsFound)
                     {
-                        break;  // Przerywamy, jeśli liczba błędów przekracza już najlepszy znaleziony wynik
+                        minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
+                        candidates.Clear();                 // Czyścimy listę kandydatów
+                        candidates.Add(potentialCode);      // Dodajemy nowego kandydata
+                    }
+
+                    // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
+                    else if (errors == minErrorsFound)
+                    {
+                        // Dodajemy kandydata do listy
+                        candidates.Add(potentialCode);
                     }
                 }
 
-                // Aktualizujemy listę kandydatów, jeśli znaleźliśmy mniej błędów
-                if (erros < minErrorsFound)
+                // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
+                DetectedErrorsForBestCandidate = minErrorsFound;
+
+                // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
+                if (minErrorsFound > MaxErrorsAllowed)
                 {
-                    minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
-                    candidates.Clear();                 // Czyścimy listę kandydatów
-                    candidates.Add(potentialCode);      // Dodajemy nowego kandydata
+                    throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności. Limit to {MaxErrorsAllowed}.");
                 }
 
-                // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
-                else if (errors == minErrorsFound)
-                {
-                    candidates.Add(potentialCode);      // Dodajemy kandydata do listy
-                }
+                LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
+                return LastGuess;               // Zwracamy ostatnie zgadywanie
             }
-
-            DetectedErrorsForBestCondidate = minErrorsFound; // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
-
-            // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
-            if (minErrorsFound > MaxErrorsAllowed)
-            {
-                throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności, a zezwoliłeś na max {MaxErrorsAllowed}. Za dużo kłamstw!");
-            }
-
-            LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
-            return LastGuess;               // Zwracamy ostatnie zgadywanie
         }
 
         // Definiujemy metodę ProcessFeedback która przetwarza informację zwrotną od użytkownika
