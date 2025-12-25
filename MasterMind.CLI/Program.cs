@@ -880,6 +880,7 @@ namespace MasterMind.CLI
                 Console.Clear();
                 string modeInfo = useDigitsMode ? "Cyfry" : "Litery"; // Informacja o aktualnym trybie
                 Console.WriteLine($"-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\nTryb: {modeInfo}\n");
+                Console.WriteLine("Autor: Piotr Bacior 15 722 - WSEI Kraków");
                 Console.WriteLine("1. Nowa gra (Człowiek VS Komputer)");
                 Console.WriteLine("2. Nowa gra (Komputer vs Człowiek) - Przemyśl swój kod");
                 Console.WriteLine("3. Ustawienia gry (N i K)");
@@ -908,6 +909,12 @@ namespace MasterMind.CLI
 
                 }
             }
+        }
+
+        // Definiujemy funkcję do obsługi menu ustawień gry
+        public void ConfigureGameParameters()
+        {
+            Console.WriteLine("\n=-=-=-=- KONFIGURACJA -=-=-=-=-= ");
         }
     }
 }
