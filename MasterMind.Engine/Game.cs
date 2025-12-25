@@ -515,6 +515,15 @@ namespace MasterMind.Engine
             StartNewGame();                 // Rozpoczynamy nową grę
         }
 
+        // Metoda rozpoczynająca nową grę - generuje losowy kod do odgadnięcia i resetuje stan gry
+        public void StartNewGame()
+        {
+            AttemptsUsed = 0;                       // ustawiamy liczbę wykorzystanych prób na 0
+            isGameOver = false;                     // resetujemy stan zakończenia gry
+            isGameWon = false;                      // resetujemy stan wygranej
+            History.Clear();                        // czyścimy historię zgadywań
+            _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
+        }
     }
 
 }
