@@ -613,6 +613,17 @@ namespace MasterMind.Engine
             }
         }
 
-       
+        // Definiujemy metodę, która zwraca nam liczbę pozostałych możliwości pozycji do zgadnięcia
+        public int GetReminingPossibilities()
+        {
+            // Tryb klasyczny - bez błędów 
+            if (!AllowErrors)
+            {
+                return _workingSet.Count;       // Zwracamy liczbę pozostałych możliwości w trybie klasycznym
+            }
+
+            // W trybie zaawansowanym, zwracamy liczbę wszystkich możliwych kodów
+            return -1;
+        }
     }
 }
