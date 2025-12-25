@@ -524,6 +524,26 @@ namespace MasterMind.Engine
             History.Clear();                        // czyścimy historię zgadywań
             _secretCode = GenerateSecretCode();     // generujemy nowy kod do odgadnięcia
         }
+
+        // Metoda do generowania losowego kodu do odgadnięcia
+        private char[] GenerateSecretCode()
+        {
+            // Generujemy losowy kod z dozwolonych kolorów
+            Random rnd = new Random();
+
+            // Tworzymy tablicę znaków reprezentującą kod do odgadnięcia
+            char[] code = new char[CodeLength];
+
+            // Losujemy kolory dla każdej pozycji w kodzie
+            for (int i = 0; i < CodeLength; i++)
+            {
+                // Wybieramy losowy kolor z dozwolonych kolorów
+                code[i] = _currentAllowedColors[rnd.Next(_currentAllowedColors.Length)];
+            }
+
+            // Zwracamy wygenerowany kod
+            return code;
+        }
     }
 
 }
