@@ -504,6 +504,15 @@ namespace MasterMind.Engine
                 // Validacja długości kodu k dla cyfr
                 _currentAllowedColors = _colorPool.Take(n).ToArray();
             }
+
+            // Validacja długości kodu k
+            if (k < 3 || k > 6) throw new ArgumentException("Długość kodu (k) musi wynosić 3, 4, 5 lub 6.");
+            CodeLength = k;                 // Ustawiamy długość kodu do odgadnięcia
+            _maxAttempts = maxAttemps;      // Ustawiamy maksymalną liczbę prób
+
+            // Inicjalizujemy historię zgadywań
+            History = new List<(string, GuessResult)>();
+            StartNewGame();                 // Rozpoczynamy nową grę
         }
 
     }
