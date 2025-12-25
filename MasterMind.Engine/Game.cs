@@ -568,7 +568,25 @@ namespace MasterMind.Engine
                 }
             }
 
+            int partialMatches = 0;                             // Inicjalizujemy licznik trafień niedokładnych 
 
+            // Szukamy tego koloru w sekretnym kodzie, pomijając już trafione dokładnie pozycje
+            for (int i = 0; i <len; i++)
+            {
+                if (guessMatched[i]) continue;                  // Pomijamy już trafione dokładnie pozycje
+
+                // Szukamy koloru z próby w kodzie sekretnym
+                for (int j = 0; j < len; j++)
+                {
+                    // Jeżeli pozycja w kodzie sekretnym nie została jeszcze trafiona dokładnie i kolory pasują
+                    if (!secretMatched[j] && guess[i] == secret[j])
+                    {
+                        partialMatches++;                       // Zwiększamy licznik trafień niedokładnych
+                        secretMatched[j] = true;                // Zużywamy pozycję w kodzie sekretnym
+                        break;                                  // Przechodzimy do następnej pozycji w zgadywaniu
+                    }
+                }
+            }
         }
     }
 
