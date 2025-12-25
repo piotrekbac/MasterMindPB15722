@@ -483,5 +483,23 @@ namespace MasterMind.Engine
             GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
             return results;                         // Zwracamy listę wygenerowanych kodów
         }
+
+        // Definiujemy rekurencyjną metodę generującą kody
+        private void GenerateRecursiveStep(string currentCode, List<string> results)
+        {
+            // Jeśli długość bieżącego kodu osiągnęła długość docelową, dodajemy go do wyników
+            if (currentCode.Length == _codeLength)
+            {
+                results.Add(currentCode);       // Dodajemy wygenerowany kod do wyników
+                return;                         // Kończymy rekurencję dla tego kodu
+            }
+
+            // Rekurencyjnie dodajemy każdy kolor do bieżącego kodu i wywołujemy funkcję ponownie
+            foreach (var colors in _colors)
+            {
+                // Dodajemy kolor do bieżącego kodu i wywołujemy rekurencję
+                GenerateAllCodesRecursively(currentCode + colors, results);
+            }
+        }
     }
 }
