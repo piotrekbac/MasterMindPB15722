@@ -501,5 +501,98 @@ namespace MasterMind.Engine
                 GenerateAllCodesRecursively(currentCode + colors, results);
             }
         }
+
+        // Definiujemy metodę GetNextGuess która zwraca następną propozycję komputera
+        public string GetNextGuess()
+        {
+            MoveCount++;                   // Zwiększamy licznik ruchów
+
+            // Strategia otwarcia np. 0011 dla cyfr lub rryy dla kolorów
+            // ponieważ _colors[0] to teraz '0' w trybie cyfr, ten kod zadziała
+            if (MoveCount == 1)
+            {
+                // Statystycznie najlepsze otwarcie, czyli pierwszy ruch zawsze typu "0011" bądź podobne
+                if (_codeLength >= 4 && _colors.Length >= 2)
+                {
+                    // Definiuejmy optymalne otwarcie dla klasycznej gry MasterMind (4 pozycje, co najmniej 2 kolory)
+                    string extraPadding = _codeLength > 4 ? new string(_colors[0], _codeLength - 4) : "";
+
+                    // Ustawiamy ostatnie zgadywanie na optymalne otwarcie
+                    LastGuess = $"({_colors[0]})({_colors[0]})({_colors[1]})({_colors[1]})" + extraPadding; // Optymalne otwarcie dla klasycznej gry MasterMind
+                }
+
+                // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy wszystkich możliwych kodów
+                else
+                {
+                    LastGuess = _allPossibleCodes[0]; // Jeżeli optymalne otwarcie nie jest możliwe, wybieramy pierwszą pozycję z listy wszystkich możliwych kodów
+                }
+
+                if (!AllowErrors && !_workingSet.Contains(LastGuess))
+                {
+                    LastGuess = _workingSet[0];  // Jeżeli optymalne otwarcie zostało wykluczone, weźmy pierwszą pozycję z listy roboczej
+                }
+
+                return LastGuess;    // Zwracamy ostatnie zgadywanie
+            }
+
+            // Tryb klasyczny - bez błędów, szybsze działanie i usuwanie
+            if (!AllowErrors)
+            {
+                // Filtrujemy listę roboczą na podstawie historii zgadywań
+                if (_workingSet.Count == 0)
+                {
+                    throw new InvalidOperationException("Brak pasujących kodów! Sprzeczność w odpowiedziach.");
+                }
+                LastGuess = _workingSet[0];     // Wybieramy pierwszą pozycję z listy roboczej
+                return LastGuess;               // Zwracamy ostatnie zgadywanie
+            }
+
+
+            else
+            {
+                var candidates = new List<string>();    // Analizujemy wszystkie możliwe kody i wybieramy te, które minimalizują liczbę sprzeczności z historią zgadywań
+                int minErrorsFound = int.MaxValue;      // Najmniejsza liczba błędów znaleziona jak dotąd
+
+                foreach (var potentialCode in _allPossibleCodes)
+                {
+                    var simulatedResult = Game.CalculateScore(potentialCode, LastGuess); // Symulujemy wynik dla potencjalnego kodu i porównujemy z rzeczywistym wynikiem
+                    if (simulatedResult != feedbackResult)
+                    {
+                        errors++;   // Zwiększamy liczbę błędów
+                    }
+
+
+                    if (errors > minErrorsFound && minErrorsFound != int.MaxValue)
+                    {
+                        break;  // Przerywamy, jeśli liczba błędów przekracza już najlepszy znaleziony wynik
+                    }
+                }
+
+                // Aktualizujemy listę kandydatów, jeśli znaleźliśmy mniej błędów
+                if (erros < minErrorsFound)
+                {
+                    minErrorsFound = errors;            // Aktualizujemy minimalną liczbę błędów
+                    candidates.Clear();                 // Czyścimy listę kandydatów
+                    candidates.Add(potentialCode);      // Dodajemy nowego kandydata
+                }
+
+                // Jeśli liczba błędów jest równa minimalnej znalezionej, dodajemy do kandydatów
+                else if (errors == minErrorsFound)
+                {
+                    candidates.Add(potentialCode);      // Dodajemy kandydata do listy
+                }
+            }
+
+            DetectedErrorsForBestCondidate = minErrorsFound; // Ustawiamy liczbę wykrytych błędów dla najlepszego kandydata
+
+            // Sprawdzamy, czy liczba błędów przekracza dozwolony limit
+            if (minErrorsFound > MaxErrorsAllowed)
+            {
+                throw new InvalidOperationException($"Nawet najlepsze pasujące kody mają {minErrorsFound} sprzeczności, a zezwoliłeś na max {MaxErrorsAllowed}. Za dużo kłamstw!");
+            }
+
+            LastGuess = candidates[0];      // Wybieramy pierwszego kandydata jako następne zgadywanie
+            return LastGuess;               // Zwracamy ostatnie zgadywanie
+        }
     }
 }
