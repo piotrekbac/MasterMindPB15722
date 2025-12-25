@@ -478,6 +478,33 @@ namespace MasterMind.Engine
         public bool isGameWon { get; private set; }             // czy gra została wygrana
         public List<(string Guess, GuessResult Result)> History { get; private set; } // historia zgadywań i ich wyników
 
+        public List<(string Guess, GuessResult Result)> GetHistory() => History; // Metoda zwracająca historię zgadywań
+
+        // Definiujemy konstruktor klasy Game z parametrami n, k, maxAttempts oraz useDigits
+        public Game(int n = 6, int k = 4, int maxAttemps = 12, bool useDigits = false)
+        {
+            // Walidujemy i ustawiamy dozwolone kolory lub cyfry na podstawie wartości n i useDigits
+            if (!useDigits)
+            {
+                // Validacja parametrów n i k dla kolorów
+                if (n < 6 || n > 8) throw new ArgumentException("Liczba kolorów (n) musi wynosić 6,7 lub 8.");
+
+                // Validacja długości kodu k dla kolorów
+                if (k >= n) throw new ArgumentException("Długość kodu (k) musi być w zakresie 6-8. ");
+                _currentAllowedColors = _colorPool.Take(n).ToArray();
+
+            }
+
+            // Ustawiamy długość kodu do odgadnięcia i maksymalną liczbę prób
+            else
+            {
+                // Validacja parametrów n i k dla cyfr
+                if (n > 10) throw new ArgumentException("Liczba cyfr (n) musi wynosić max 10.");
+
+                // Validacja długości kodu k dla cyfr
+                _currentAllowedColors = _colorPool.Take(n).ToArray();
+            }
+        }
 
     }
 
