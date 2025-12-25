@@ -874,6 +874,7 @@ namespace MasterMind.CLI
 
         static void Main(string[] args)
         {
+            // Główna pętla menu gry
             while (true)
             {
                 Console.Clear();
