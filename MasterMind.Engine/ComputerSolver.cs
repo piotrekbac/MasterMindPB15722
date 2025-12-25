@@ -453,7 +453,7 @@ namespace MasterMind.Engine
         public int DetectedErrorsForBestCondidate { get; private set; } = 0; // Liczba wykrytych błędów dla najlepszego kandydata
 
         // Tworzymy metodę ComputerSolver, która przyjmuje parametry n, k oraz useDigits i wykonuje metodę Reset
-        public ComputerSolver (int n = 6, int k = 4, bool useDigits = false)
+        public ComputerSolver(int n = 6, int k = 4, bool useDigits = false)
         {
             var tempGame = new Game(n, k, useDigits);                  // Tworzymy tymczasową grę aby pobrać kolory i długość kodu
             _colors = tempGame.GetAllowedColorsArray();                 // Pobieramy kolory z gry
@@ -474,6 +474,14 @@ namespace MasterMind.Engine
             MoveCount = 0;                                      // Resetowanie licznika ruchów
             LastGuess = null;                                   // Resetowanie ostatniej propozycji
             DetectedErrorsForBestCondidate = 0;                 // Resetowanie liczby wykrytych błędów
+        }
+
+        // Definiujemy Listę stringów GenerateAllCodesRecursively która generuje wszystkie możliwe kody rekurencyjnie
+        private List<string> GenerateAllCodesRecursively()
+        {
+            var results = new List<string>();       // Lista do przechowywania wygenerowanych kodów
+            GenerateRecursiveStep("", results);     // Wywołanie rekurencyjnej funkcji generującej kody
+            return results;                         // Zwracamy listę wygenerowanych kodów
         }
     }
 }
