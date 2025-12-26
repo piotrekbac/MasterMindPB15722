@@ -1140,5 +1140,32 @@ namespace MasterMind.CLI
             Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...");
             Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego
         }
+
+        static void DisplayResult(GuessResult result)
+        {
+            // Wyświetlamy wynik zgadywania za pomocą symboli i ustawiamy odpowiedni kolor tła konsoli
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+
+            // Wyświetlamy idealne trafienia
+            for (int i = 0; i < result.ExactMatches; i++)
+            {
+                Console.WriteLine("* ");
+            }
+
+            // ustawiamy kolor dla trafień na złej pozycji i wyświetlamy je
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // Wyświetlamy trafienia na złej pozycji
+            for (int i = 0; i < result.PartialMatches; i++)
+            {
+                Console.WriteLine("o ");
+            }
+
+            // Resetujemy kolor konsoli do domyślnego
+            Console.ResetColor();
+
+            // Wyświetlamy dokładne liczby trafień i trafień na złej pozycji
+            Console.WriteLine($"({result.ExactMatches}, {result.PartialMatches})");
+        }
     }
 }
