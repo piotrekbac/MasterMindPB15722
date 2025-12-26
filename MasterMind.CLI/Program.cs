@@ -857,6 +857,7 @@
 // =-=-=-=-=-=--=-=-=-= ZADANIE 5 =-=-=-=-=-=--=-=-=-= 
 
 using System;
+using System.Reflection.Metadata;
 using MasterMind.Engine;
 
 // Piotr Bacior 15 722
@@ -1119,7 +1120,25 @@ namespace MasterMind.CLI
 
                     solver.ProcessFeedback(exact, partial);    // Przetwarzamy informacje zwrotne od użytkownika
                 }
+
+                //Wyłapujemy wyjątki i wyświetlamy komunikaty o błędach
+                catch (InvalidOperationException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"KONIEC (Oszustwo/Błąd): {ex.Message}");
+                    Console.ResetColor();
+                    break;
+                }
+
+                // Wyłapujemy inne wyjątki i wyświetlamy komunikaty o błędach
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
             }
+
+            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...");
+            Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego
         }
     }
 }
