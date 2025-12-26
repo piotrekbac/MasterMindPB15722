@@ -864,6 +864,7 @@ using MasterMind.Engine;
 
 namespace MasterMind.CLI
 {
+    // Główna klasa programu
     class Program
     {
         // Ustawienia globalne 

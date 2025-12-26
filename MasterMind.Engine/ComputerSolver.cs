@@ -438,6 +438,8 @@ namespace MasterMind.Engine
 
     // =-=-=-=-=-=--=-=-=-= ZADANIE 5 =-=-=-=-=-=--=-=-=-= 
 
+    // Piotr Bacior - MasterMind Game - nr indeksu: 15 722 - WSEI Kraków
+
     public class ComputerSolver
     {
         private readonly char[] _colors;                            // Kolory dostępne w grze MasterMind
