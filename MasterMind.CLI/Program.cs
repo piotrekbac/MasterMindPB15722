@@ -1089,7 +1089,35 @@ namespace MasterMind.CLI
                     // Pobieramy liczbę trafień dokładnych od użytkownika
                     Console.WriteLine("Trafienia DOKŁADNE (czarne): ");
                     string exactIn = Console.ReadLine();
+
+                    // Parsujemy liczbę trafień dokładnych
                     int exact = string.IsNullOrEmpty(exactIn) ? 0 : int.Parse(exactIn);
+
+                    // Sprawdzamy czy komputer odgadł kod
+                    if (exact == currentK)
+                    {
+                        Console.WriteLine($"Komputer wygrał w {solver.MoveCount} ruchach!");
+
+                        // Ustawiamy flagę solved na true, aby zakończyć pętlę
+                        solved = true;
+                        break;
+                    }
+
+                    // Pobieramy liczbę trafień niedokładnych od użytkownika
+                    Console.WriteLine("Trafienia NIEDOKŁADNE ");
+                    string partialIn = Console.ReadLine();
+
+                    // Parsujemy liczbę trafień niedokładnych
+                    int partial = string.IsNullOrEmpty(partialIn) ? 0 : int.Parse(partialIn);
+
+                    // Walidujemy sumę trafień dokładnych i niedokładnych
+                    if (exact + partial > currentK)
+                    {
+                        Console.WriteLine($"Błąd: Suma trafień > {currentK}. Spróbuj ponowanie.");
+                        continue;
+                    }
+
+                    solver.ProcessFeedback(exact, partial);    // Przetwarzamy informacje zwrotne od użytkownika
                 }
             }
         }
