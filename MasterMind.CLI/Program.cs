@@ -1044,7 +1044,7 @@ namespace MasterMind.CLI
                 Console.WriteLine($"Koniec gry! Prawidłowy kod to: {game.RevealCode()}");
             }
 
-            Console.WriteLine("Naciśnij klawisz...");
+            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...");
             Console.ReadKey();
         }
 
@@ -1070,6 +1070,28 @@ namespace MasterMind.CLI
 
             Console.WriteLine("Wciśnij ENTER, aby przejść dalej...");
             Console.ReadLine();
+
+            // Główna pętla zgadywania komputera - kontynuujemy aż do odgadnięcia kodu
+            bool solved = false;
+            while (!solved)
+            {
+                // Sprawdzamy czy komputer odgadł kod
+                try
+                {
+                    // Pobieramy następną propozycję komputera
+                    string guess = solver.GetNextGuess();
+
+                    // Wyświetlamy propozycję komputera i liczbę pozostałych możliwych kombinacji
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.GetReminingPossibilities()})");
+                    Console.ResetColor();
+
+                    // Pobieramy liczbę trafień dokładnych od użytkownika
+                    Console.WriteLine("Trafienia DOKŁADNE (czarne): ");
+                    string exactIn = Console.ReadLine();
+                    int exact = string.IsNullOrEmpty(exactIn) ? 0 : int.Parse(exactIn);
+                }
+            }
         }
     }
 }
