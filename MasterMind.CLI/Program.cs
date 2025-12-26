@@ -895,25 +895,26 @@ namespace MasterMind.CLI
                 // Obsługujemy wybór użytkownika za pomocą instrukcji switch
                 switch (key.Key)
                 {
-                    case ConsoleKey.D1;
+                    case ConsoleKey.D1:
                         PlayHumanGuesser();
                         break;
 
-                    case ConsoleKey.D2;
-                        PlayComputerGuesser();
+                    case ConsoleKey.D2:
+                        PlayComputerGuesser(); 
                         break;
-                    case ConsoleKey.D3;
+
+                    case ConsoleKey.D3:
                         ConfigureGameParameters();
                         break;
-                    case ConsoleKey.D4;
-                        return;
 
+                    case ConsoleKey.D4:
+                        return;
                 }
             }
         }
 
         // Definiujemy funkcję do obsługi menu ustawień gry
-        public void ConfigureGameParameters()
+        public static void ConfigureGameParameters()
         {
             Console.WriteLine("\n=-=-=-=- KONFIGURACJA -=-=-=-=-= ");
             Console.WriteLine("1. Klasyczny (Kolory: r, y, g, b...)");
@@ -1050,7 +1051,7 @@ namespace MasterMind.CLI
         }
 
         // Definiujemy funkcję do obsługi trybu, w którym komputer zgaduje kod
-        static void PlayHumanGuesser()
+        static void PlayComputerGuesser()
         {
             // Tworzymy nową grę MasterMind z aktualnymi wartościami N i K
             ComputerSolver solver = new ComputerSolver(currentN, currentK, useDigitsMode);
