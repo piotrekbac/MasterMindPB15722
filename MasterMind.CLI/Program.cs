@@ -1017,6 +1017,19 @@ namespace MasterMind.CLI
                     Console.WriteLine($"Błąd: Wpisz dokładnie {currentK}");
                     continue;
                 }
+
+                // Funkcja do wyświetlania wyniku zgadywania
+                try
+                {
+                    var result = game.EvaluateGuess(input);         // oceniamy zgadywanie użytkownika
+                    DisplayResult(result);                          // wyświetlamy wynik zgadywania
+                }
+
+                // catchujemy wyjątki i wyświetlamy komunikaty o wszelkich błędach.
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd: {ex.Message}\n");
+                }
             }
         }
     }
