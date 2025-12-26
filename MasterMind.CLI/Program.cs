@@ -915,6 +915,37 @@ namespace MasterMind.CLI
         public void ConfigureGameParameters()
         {
             Console.WriteLine("\n=-=-=-=- KONFIGURACJA -=-=-=-=-= ");
+            Console.WriteLine("1. Klasyczny (Kolory: r, y, g, b...)");
+            Console.WriteLine("2. Cyfrowy (Cyfry 0-9)");
+            Console.Write("Wyiberz (1/2)");
+
+            // Definiujemy zmienną do przechowywania wyboru użytkownika
+            var modeKey = Console.ReadKey().Key;
+
+            Console.WriteLine();
+
+            if (modeKey == ConsoleKey.D2)
+            {
+                useDigitsMode = true;   // Ustawiamy tryb cyfr na true
+                currentN = 10;          // Ustawiamy N na 10 dla cyfr 0-9
+                Console.WriteLine("Wybierz tryb CYFRY (N ustawiono na 10).");
+            }
+            else
+            {
+                useDigitsMode = false; // Ustawiamy tryb cyfr na false
+                Console.WriteLine("Wybrano tryb KOLORY.");
+
+                int newN = 0;       // Pętla do pobierania i walidacji wartości N
+
+                while (true)
+                {
+                    Console.WriteLine("Podaj liczbę kolorów (n) [6-8]: ");
+                    if (int.TryParse(Console.ReadLine(), out newN) && newN >= 6 && newN <= 8) break;
+                    Console.WriteLine("Błąd. Podaj liczbę 6,7 lub 8.");
+                }
+
+                currentN = newN;    // Aktualizujemy wartość N
+            }
         }
     }
 }
