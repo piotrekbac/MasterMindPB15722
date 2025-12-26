@@ -1047,5 +1047,29 @@ namespace MasterMind.CLI
             Console.WriteLine("Naciśnij klawisz...");
             Console.ReadKey();
         }
+
+        // Definiujemy funkcję do obsługi trybu, w którym komputer zgaduje kod
+        static void PlayHumanGuesser()
+        {
+            // Tworzymy nową grę MasterMind z aktualnymi wartościami N i K
+            ComputerSolver solver = new ComputerSolver(currentN, currentK, useDigitsMode);
+
+            // Ustawiamy tryb oszusta zgodnie z konfiguracją użytkownika
+            solver.AllowErrors = allowLies;
+
+            // Ustawiamy maksymalną liczbę kłamstw zgodnie z konfiguracją użytkownika
+            solver.MaxErrorsAllowed = maxLies;
+
+            Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z: {new Game(currentN, currentK, 12, useDigitsMode).GetAllowedColors()}");
+
+            // Informujemy użytkownika o trybie oszusta jeżeli jest włączony
+            if (allowLies)
+            {
+                Console.WriteLine($"Tryb odporny na błędy (Max {maxLies}");
+            }
+
+            Console.WriteLine("Wciśnij ENTER, aby przejść dalej...");
+            Console.ReadLine();
+        }
     }
 }
