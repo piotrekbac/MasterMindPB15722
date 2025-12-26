@@ -993,5 +993,31 @@ namespace MasterMind.CLI
             Console.WriteLine("\nUstawienia zapisane! Naciśnij dowolny klawisz...");
             Console.ReadKey();
         }
+
+        // Definiujemy funkcję do obsługi menu ustawień gry
+        static void PlayHumanGuesser()
+        {
+            // Tworzymy nową grę MasterMind z aktualnymi wartościami N i K
+            Game game = new Game(currentN, currentK, 12, useDigitsMode);
+
+            Console.WriteLine($"\n[TRYB] Zgadujesz kod ({currentK} znaki).");
+            Console.WriteLine($"Alfabet: {game.GetAllowedColors()}");
+
+            // Główna pętla gry - kontynuujemy aż do zakończenia gry
+            while (!game.isGameOver)
+            {
+                Console.WriteLine($"Próba {game.AttemptsUsed + 1}: ");
+
+                // Tworzymy zmienną input do przechowywania danych wejściowych użytkownika
+                string input = Console.ReadLine()?.Trim().ToLower();
+
+                // Walidacja danych wejściowych - sprawdzamy czy wprowadzono dokładnie K liter
+                if (string.IsNullOrEmpty(input) || input.Length != currentK)
+                {
+                    Console.WriteLine($"Błąd: Wpisz dokładnie {currentK}");
+                    continue;
+                }
+            }
+        }
     }
 }
