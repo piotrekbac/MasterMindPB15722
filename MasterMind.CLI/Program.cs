@@ -990,6 +990,8 @@ namespace MasterMind.CLI
                 allowLies = false;
                 maxLies = 0;
             }
+            Console.WriteLine("\nUstawienia zapisane! Naciśnij dowolny klawisz...");
+            Console.ReadKey();
         }
     }
 }
