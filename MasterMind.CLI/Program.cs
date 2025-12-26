@@ -972,6 +972,24 @@ namespace MasterMind.CLI
             }
 
             currentK = newK;    // Aktualizujemy wartość K
+
+            Console.WriteLine("\n--- Opcje oszukiwania ---");
+            Console.WriteLine("Czy dopuszczasz pomyłki (kłamstwa)? (t/n): ");
+
+            var lies = Console.ReadKey().Key;
+            Console.WriteLine();
+
+            if (lies == ConsoleKey.T)
+            {
+                allowLies = true;
+                Console.Write("Ile błędnych odpowiedzi dopuszczasz? ");
+                int.TryParse(Console.ReadLine(), out maxLies);
+            }
+            else
+            {
+                allowLies = false;
+                maxLies = 0;
+            }
         }
     }
 }
