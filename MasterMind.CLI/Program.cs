@@ -946,6 +946,32 @@ namespace MasterMind.CLI
 
                 currentN = newN;    // Aktualizujemy wartość N
             }
+
+            int newK = 0;       // Pętla do pobierania i walidacji wartości K
+
+            // Pętla do pobierania i walidacji wartości K
+            while (true)
+            {
+                Console.WriteLine($"Podaj długość kodu (k) [3-6]: ");
+                if (int.TryParse(Console.ReadLine(), out newK) && newK >= 3 && newK <= 6)
+                {
+                    if (useDigitsMode || newK < currentN)
+                    {
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine($"Długość kodu musi być mniejsza od N ({currentN})");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Błąd. Podaj liczbę 3-6");
+                }
+            }
+
+            currentK = newK;    // Aktualizujemy wartość K
         }
     }
 }
