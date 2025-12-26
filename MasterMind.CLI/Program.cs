@@ -1037,7 +1037,7 @@ namespace MasterMind.CLI
                 // Walidacja danych wejściowych - sprawdzamy czy wprowadzono dokładnie K liter
                 if (string.IsNullOrEmpty(input) || input.Length != currentK)
                 {
-                    Console.WriteLine($"Błąd: Wpisz dokładnie {currentK}");
+                    Console.WriteLine($"Błąd: Wpisz dokładnie {currentK} znaki/ów.\n");
                     continue;
                 }
 
@@ -1058,16 +1058,16 @@ namespace MasterMind.CLI
             // Wyświetlamy komunikat o zakończeniu gry
             if (game.isGameWon)
             {
-                Console.WriteLine("Gratulacje! Odgadłeś kod!");
+                Console.WriteLine("Gratulacje! Odgadłeś kod!\n");
             }
 
             // Wyświetlamy prawidłowy kod jeżeli użytkownik nie odgadł kodu
             else
             {
-                Console.WriteLine($"Koniec gry! Prawidłowy kod to: {game.RevealCode()}");
+                Console.WriteLine($"Koniec gry! Prawidłowy kod to: {game.RevealCode()}\n");
             }
 
-            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...");
+            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...\n");
             Console.ReadKey();
         }
 
@@ -1083,15 +1083,15 @@ namespace MasterMind.CLI
             // Ustawiamy maksymalną liczbę kłamstw zgodnie z konfiguracją użytkownika
             solver.MaxErrorsAllowed = maxLies;
 
-            Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z: {new Game(currentN, currentK, 12, useDigitsMode).GetAllowedColors()}");
+            Console.WriteLine($"\n[TRYB] Pomyśl kod ({currentK} znaki z: {new Game(currentN, currentK, 12, useDigitsMode).GetAllowedColors()}\n");
 
             // Informujemy użytkownika o trybie oszusta jeżeli jest włączony
             if (allowLies)
             {
-                Console.WriteLine($"Tryb odporny na błędy (Max {maxLies}");
+                Console.WriteLine($"Tryb odporny na błędy (Max {maxLies}.\n");
             }
 
-            Console.WriteLine("Wciśnij ENTER, aby przejść dalej...");
+            Console.WriteLine("Wciśnij ENTER, aby przejść dalej...\n");
             Console.ReadLine();
 
             // Główna pętla zgadywania komputera - kontynuujemy aż do odgadnięcia kodu
@@ -1106,11 +1106,11 @@ namespace MasterMind.CLI
 
                     // Wyświetlamy propozycję komputera i liczbę pozostałych możliwych kombinacji
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.GetReminingPossibilities()})");
+                    Console.WriteLine($"\nKomputer: {guess.ToUpper()} (Możliwych: {solver.GetReminingPossibilities()})\n");
                     Console.ResetColor();
 
                     // Pobieramy liczbę trafień dokładnych od użytkownika
-                    Console.WriteLine("Trafienia DOKŁADNE (czarne): ");
+                    Console.WriteLine("Trafienia DOKŁADNE (czarne): \n");
                     string exactIn = Console.ReadLine();
 
                     // Parsujemy liczbę trafień dokładnych
@@ -1119,7 +1119,7 @@ namespace MasterMind.CLI
                     // Sprawdzamy czy komputer odgadł kod
                     if (exact == currentK)
                     {
-                        Console.WriteLine($"Komputer wygrał w {solver.MoveCount} ruchach!");
+                        Console.WriteLine($"Komputer wygrał w {solver.MoveCount} ruchach!\n");
 
                         // Ustawiamy flagę solved na true, aby zakończyć pętlę
                         solved = true;
@@ -1127,7 +1127,7 @@ namespace MasterMind.CLI
                     }
 
                     // Pobieramy liczbę trafień niedokładnych od użytkownika
-                    Console.WriteLine("Trafienia NIEDOKŁADNE ");
+                    Console.WriteLine("Trafienia NIEDOKŁADNE \n");
                     string partialIn = Console.ReadLine();
 
                     // Parsujemy liczbę trafień niedokładnych
@@ -1136,7 +1136,7 @@ namespace MasterMind.CLI
                     // Walidujemy sumę trafień dokładnych i niedokładnych
                     if (exact + partial > currentK)
                     {
-                        Console.WriteLine($"Błąd: Suma trafień > {currentK}. Spróbuj ponowanie.");
+                        Console.WriteLine($"Błąd: Suma trafień > {currentK}. Spróbuj ponowanie.\n");
                         continue;
                     }
 
@@ -1147,7 +1147,7 @@ namespace MasterMind.CLI
                 catch (InvalidOperationException ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"KONIEC (Oszustwo/Błąd): {ex.Message}");
+                    Console.WriteLine($"KONIEC (Oszustwo/Błąd): {ex.Message}.\n");
                     Console.ResetColor();
                     break;
                 }
@@ -1159,7 +1159,7 @@ namespace MasterMind.CLI
                 }
             }
 
-            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...");
+            Console.WriteLine("Naciśnij dowolny klawisz, aby przejść dalej...\n");
             Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego
         }
 
@@ -1188,7 +1188,7 @@ namespace MasterMind.CLI
             Console.ResetColor();
 
             // Wyświetlamy dokładne liczby trafień i trafień na złej pozycji
-            Console.WriteLine($"({result.ExactMatches}, {result.PartialMatches})");
+            Console.WriteLine($"({result.ExactMatches}, {result.PartialMatches}).\n");
         }
     }
 }
