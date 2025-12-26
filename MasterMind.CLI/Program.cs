@@ -896,18 +896,22 @@ namespace MasterMind.CLI
                 // Obsługujemy wybór użytkownika za pomocą instrukcji switch
                 switch (key.Key)
                 {
+                    // Przypadek wyboru trybu, w którym człowiek zgaduje kod
                     case ConsoleKey.D1:
                         PlayHumanGuesser();
                         break;
 
+                    // Przypadek wyboru trybu, w którym komputer zgaduje kod
                     case ConsoleKey.D2:
                         PlayComputerGuesser(); 
                         break;
 
+                    // Przypadek wyboru menu ustawień gry
                     case ConsoleKey.D3:
                         ConfigureGameParameters();
                         break;
 
+                    // Przypadek wyjścia z programu
                     case ConsoleKey.D4:
                         return;
                 }
@@ -927,12 +931,15 @@ namespace MasterMind.CLI
 
             Console.WriteLine();
 
+            // Jeżeli użytkownik wybrał tryb cyfr
             if (modeKey == ConsoleKey.D2)
             {
                 useDigitsMode = true;   // Ustawiamy tryb cyfr na true
                 currentN = 10;          // Ustawiamy N na 10 dla cyfr 0-9
                 Console.WriteLine("Wybierz tryb CYFRY (N ustawiono na 10).");
             }
+
+            // Jeżeli użytkownik wybrał tryb kolorów
             else
             {
                 useDigitsMode = false; // Ustawiamy tryb cyfr na false
@@ -940,6 +947,7 @@ namespace MasterMind.CLI
 
                 int newN = 0;       // Pętla do pobierania i walidacji wartości N
 
+                // Pętla do pobierania i walidacji wartości N
                 while (true)
                 {
                     Console.WriteLine("Podaj liczbę kolorów (n) [6-8]: ");
@@ -956,18 +964,24 @@ namespace MasterMind.CLI
             while (true)
             {
                 Console.WriteLine($"Podaj długość kodu (k) [3-6]: ");
+
+                // Pobieramy i walidujemy wartość K od użytkownika
                 if (int.TryParse(Console.ReadLine(), out newK) && newK >= 3 && newK <= 6)
                 {
+                    // Sprawdzamy czy K jest mniejsze od N lub czy jesteśmy w trybie cyfr
                     if (useDigitsMode || newK < currentN)
                     {
                         break;
                     }
 
+                    // Wyświetlamy komunikat o błędzie jeżeli K nie jest mniejsze od N
                     else
                     {
                         Console.WriteLine($"Długość kodu musi być mniejsza od N ({currentN})");
                     }
                 }
+
+                // Wyświetlamy komunikat o błędzie jeżeli wartość K jest nieprawidłowa
                 else
                 {
                     Console.WriteLine("Błąd. Podaj liczbę 3-6");
@@ -979,20 +993,26 @@ namespace MasterMind.CLI
             Console.WriteLine("\n--- Opcje oszukiwania ---");
             Console.WriteLine("Czy dopuszczasz pomyłki (kłamstwa)? (t/n): ");
 
+            // Definiujemy zmienną do przechowywania wyboru użytkownika
             var lies = Console.ReadKey().Key;
             Console.WriteLine();
 
+            // Sprawdzamy czy użytkownik wybrał tryb oszusta
             if (lies == ConsoleKey.T)
             {
+                // Ustawiamy tryb oszusta na true
                 allowLies = true;
                 Console.Write("Ile błędnych odpowiedzi dopuszczasz? ");
                 int.TryParse(Console.ReadLine(), out maxLies);
             }
+
+            // Jeżeli użytkownik nie wybrał trybu oszusta
             else
             {
                 allowLies = false;
                 maxLies = 0;
             }
+
             Console.WriteLine("\nUstawienia zapisane! Naciśnij dowolny klawisz...");
             Console.ReadKey();
         }
@@ -1143,6 +1163,7 @@ namespace MasterMind.CLI
             Console.ReadKey(); // Czekamy na naciśnięcie klawisza przed powrotem do menu głównego
         }
 
+        // Defunkcja do obsługi menu ustawień gry
         static void DisplayResult(GuessResult result)
         {
             // Wyświetlamy wynik zgadywania za pomocą symboli i ustawiamy odpowiedni kolor tła konsoli
