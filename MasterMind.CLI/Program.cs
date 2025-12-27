@@ -884,7 +884,7 @@ namespace MasterMind.CLI
                 Console.WriteLine($"-_-_-_-_-_ GRA MASTER MIND -_-_-_-_-_\nTryb: {modeInfo}\n");
                 Console.WriteLine("Autor: Piotr Bacior 15 722 - WSEI Kraków");
                 Console.WriteLine("1. Nowa gra (Człowiek VS Komputer)");
-                Console.WriteLine("2. Nowa gra (Komputer vs Człowiek) - Przemyśl swój kod");
+                Console.WriteLine("2. Nowa gra (Komputer vs Człowiek) - Przemyśl wcześniej swój kod!");
                 Console.WriteLine("3. Ustawienia gry (N i K)");
                 Console.WriteLine("4. Wyjście\n");
                 Console.WriteLine("Wybierz opcję: ");
@@ -923,8 +923,8 @@ namespace MasterMind.CLI
         {
             Console.WriteLine("\n=-=-=-=- KONFIGURACJA -=-=-=-=-= ");
             Console.WriteLine("1. Klasyczny (Kolory: r, y, g, b...)");
-            Console.WriteLine("2. Cyfrowy (Cyfry 0-9)");
-            Console.Write("Wyiberz (1/2)");
+            Console.WriteLine("2. Cyfrowy (Cyfry 0-9)\n");
+            Console.Write("Wybierz (1/2): \n");
 
             // Definiujemy zmienną do przechowywania wyboru użytkownika
             var modeKey = Console.ReadKey().Key;
